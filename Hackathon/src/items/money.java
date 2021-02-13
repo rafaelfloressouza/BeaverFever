@@ -11,7 +11,7 @@ public class money {
 	private Image image;
 	public Image image() {return image;}
 	
-	
+	//constructor for money
 	public money (int value, Image image) {
 		this.value = value;
 		this.image = image;
