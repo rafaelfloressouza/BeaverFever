@@ -38,6 +38,8 @@ public class Player {
 			y + sy >= world.height() ||
 			y + sy < 0)
 			return;
+		if (world.tile(x + sx, y + sy).isWall())
+			return;
 		x += sx;
 		y += sy;
 	}
