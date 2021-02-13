@@ -28,7 +28,7 @@ public class Main extends Application {
 			//Initializes the first game screen, StartScreen
 			//screen = new StartScreen(width, height);
 			screen = new MainScreen(width, height);
-			
+
 			//Displays the screens output and adds a key handler
 			repaint();
 			addKeyHandler(screen);
