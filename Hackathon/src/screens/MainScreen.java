@@ -18,6 +18,8 @@ public class MainScreen extends Screen {
 		//Creates the player and adds it to the world
 		player = new Player(world, "Player", Load.newImage("players/beaver.png"), Player.PlayerType.HUMAN);
 		world.addPlayer(player);
+		player.x = 1;
+		player.y = 1;
 	}
 
 	@Override
