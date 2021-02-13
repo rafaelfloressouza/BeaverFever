@@ -3,6 +3,7 @@ package screens;
 import characters.Player;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import tools.FieldOfView;
 import tools.Load;
 import world.World;
 
@@ -16,10 +17,8 @@ public class MainScreen extends Screen {
 		world.generate();
 		
 		//Creates the player and adds it to the world
-		player = new Player(world, "Player", Load.newImage("players/beaver.png"), Player.PlayerType.HUMAN);
-		world.addPlayer(player);
-		player.x = 1;
-		player.y = 1;
+		player = Player.getNewPlayer(world, "Player", Load.newImage("players/beaver.png"), Player.PlayerType.HUMAN);
+		player.setFOV(new FieldOfView(world));
 	}
 
 	@Override
@@ -32,9 +31,10 @@ public class MainScreen extends Screen {
 		int leftmost = getLeftmostTile(tilewidth);
 		int topmost = getTopmostTile(tileheight);
 		
-		// Using that info, displays visible tiles as a grid
-		displayTiles(tilewidth, tileheight, leftmost, topmost);
+		player.fov().update(player.x, player.y, player.visionRadius());
 		
+		// Using that info, displays visible tiles and creatures on a grid
+		displayTiles(tilewidth, tileheight, leftmost, topmost);
 		displayCreatures(tilewidth, tileheight, leftmost, topmost);
 	}
 	
@@ -57,14 +57,15 @@ public class MainScreen extends Screen {
 			for (int y = 0; y < tileheight; y++){
 				int wx = x + left;
 				int wy = y + top;
-				draw(root, world.tile(wx, wy).image(), x*48,y*48);
+				draw(root, player.tile(wx, wy).image(), x*48,y*48);
 			}
 		}
 	}
 	private void displayCreatures(int width, int height, int left, int top) {
 		for (Player c : world.players()) {
 			if (c.x >= left && c.x < left + width &&
-					c.y >= top && c.y < top + height) {
+				c.y >= top && c.y < top + height &&
+				player.canSee(c.x, c.y)) {
 				draw(root, c.image(), (c.x-left)*48, (c.y-top)*48);
 			}
 		}
