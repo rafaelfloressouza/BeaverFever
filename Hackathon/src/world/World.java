@@ -43,8 +43,9 @@ public class World {
 	 * Generates the world
 	 */
 	public void generate() {
-		for (int x = 0; x < width; x++)
-			for (int y = 0; y < height; y++)
-				tiles[x][y] = Tile.FLOOR;
+		WorldBuilder b = new WorldBuilder(width, height);
+		tiles = b.generate(200);
 	}
+	
+	
 }
