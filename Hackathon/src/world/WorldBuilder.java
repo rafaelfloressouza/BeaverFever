@@ -95,7 +95,6 @@ public class WorldBuilder {
 		} while (adjacentToFloor(sx,sy) > 0);
 		generateMaze(sx,sy);
 		
-		System.out.println("First Maze Generated");
 		
 		for (int x = 1; x < width-1; x++) {
 			for (int y = 1; y < height-1; y++) {
@@ -104,18 +103,11 @@ public class WorldBuilder {
 				}
 			}
 		}
-		
-		System.out.println("All Mazes Generated");
-		printMap();
-		
 		createRegions();
-		System.out.println("Regions Complete");
 		
 		findConnectors();
-		System.out.println("Connectors Found");
 		
 		resolveConnections();
-		System.out.println("Connections Resolved");
 		
 		for (int x = 1; x < width-1; x++) {
 			for (int y = 1; y < height-1; y++) {
@@ -127,7 +119,6 @@ public class WorldBuilder {
 				}
 			}
 		}
-		System.out.println("Dead Ends Removed");
 	}
 	/**
 	 * A basic algorithm that generates a maze

@@ -1,6 +1,9 @@
 package characters;
 
 import javafx.scene.image.Image;
+import tools.FieldOfView;
+import tools.Point;
+import world.Tile;
 import world.World;
 
 public class Player {
@@ -27,6 +30,10 @@ public class Player {
 	private PlayerType type;
 	public PlayerType type(){ return type;}
 	
+	// A reference to this creatures AI
+	private AI ai;
+    public void setAI(AI ai) { this.ai = ai; }
+	
 	// Constructor
 	public Player(World world, String name, Image image, PlayerType type) {
 		this.world = world;
@@ -51,8 +58,54 @@ public class Player {
 		x += sx;
 		y += sy;
 	}
+	
+	/**
+	 * Checks if this creature can enter a designated point
+	 */
+	public boolean canEnter(int cx, int cy) {
+		return !world.tile(cx, cy).isWall() && world.player(cx,cy) == null;
+	}
+	
+	/**
+	 * Field of View stuff
+	 */
+	private int visionRadius;
+	public int visionRadius() { return visionRadius; }
+	public void setVisionRadius(int r) { visionRadius = r; }
+	private FieldOfView fov;
+	public FieldOfView fov() { return fov; }
+	public void setFOV(FieldOfView fov) { this.fov = fov; }
+	public boolean canSee(int wx, int wy) {
+		return ai.canSee(wx, wy);
+	}
+	public Tile tile(int wx, int wy) {
+    	if (canSee(wx, wy))
+            return world.tile(wx, wy);
+        else
+            return rememberedTile(wx, wy);
+    }
+    public Tile realTile(int wx, int wy) {
+    	return world.tile(wx, wy);
+    }
+    public Tile rememberedTile(int wx, int wy) {
+    	if (type == PlayerType.AI)
+    		return Tile.NULL;
+    	else
+    		return fov.tile(wx, wy);
+    }
 
-	public Player getNewPlayer(World world, String name, Image image, PlayerType type){
-		return new Player(world, name, image, type);
+	/**
+	 * A creature factory
+	 */
+	public static Player getNewPlayer(World world, String name, Image image, PlayerType type){
+		Player p = new Player(world, name, image, type);
+		p.setVisionRadius(9);
+		Point spawn = world.getEmptySpace();
+		p.x = spawn.x;
+		p.y = spawn.y;
+		if (type == PlayerType.HUMAN)
+			new PlayerAI(p);
+		world.addPlayer(p);
+		return p;
 	}
 }
