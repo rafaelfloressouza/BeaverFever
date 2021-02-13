@@ -1,5 +1,6 @@
 package screens;
 
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
@@ -18,29 +19,21 @@ public class StartScreen extends Screen {
 
 	@Override
 	public Screen userInput(KeyEvent key) {
+
 		KeyCode code = key.getCode();
+		Screen s = this;
 		
-		char c = '-';
-    	if (key.getText().length() > 0)
-    		c = key.getText().charAt(0);
-    	
-    	if (code.equals(KeyCode.ENTER))
-    		s += "\n";
-    	else if (code.equals(KeyCode.BACK_SPACE)) {
-    		if (s.length() > 0)
-    			s = s.substring(0, s.length() - 1);
-    	}
-    	
-    	else {
-    		s += c;
-    	}
-    	
-		return this;
+		if(code.equals(KeyCode.S)){
+			s = new MainScreen(this.width, this.height);
+		}else if(code.equals(KeyCode.ESCAPE)){
+			System.exit(0);
+		}
+
+		return s;
 	}
 
 	@Override
 	public void displayOutput() {
-		writeWrapped(root, s, 16, 32, width - 32, f, Color.WHITE);
+		draw(root, Load.newImage("players/t.jpg"),0, 0);
 	}
-
 }
