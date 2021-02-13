@@ -2,6 +2,7 @@ package application;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
+import screens.MainScreen;
 import screens.Screen;
 import screens.StartScreen;
 import javafx.scene.input.KeyEvent;
@@ -25,7 +26,8 @@ public class Main extends Application {
 			//primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("resources/window-icon.png"))); //Window icon
 			
 			//Initializes the first game screen, StartScreen
-			screen = new StartScreen(width, height);
+			//screen = new StartScreen(width, height);
+			screen = new MainScreen(width, height);
 			
 			//Displays the screens output and adds a key handler
 			repaint();

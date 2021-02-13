@@ -19,6 +19,7 @@ public class StartScreen extends Screen {
 	@Override
 	public Screen userInput(KeyEvent key) {
 		KeyCode code = key.getCode();
+		
 		char c = '-';
     	if (key.getText().length() > 0)
     		c = key.getText().charAt(0);
