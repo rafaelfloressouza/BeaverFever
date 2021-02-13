@@ -142,7 +142,25 @@ public abstract class Screen {
     		text.setWrappingWidth(width);
     	root.getChildren().add(text);
     }
-	
-	
-	
+
+	 /**
+	 * A method to write text to the screen, centered based on width and height
+	 * @param root:		Root of the screen
+	 * @param s:		The string to write
+	 * @param width:	Width of the screen
+	 * @param height:	Height of the screen
+	 * @param font:		Font type
+	 * @param color:	Color information
+	 * */
+    public void writeCentered(Group root, String s, int width, int height, Font font, Color color){
+    	Text text = new Text();
+    	text.setText(s);
+    	int x = (int) ( (width / 2) - (text.prefWidth(-1)));
+    	int y = (int) ( (height /2) - (text.maxHeight(-1)) / 2);
+    	text.setX(x);
+		text.setY(y);
+    	text.setFont(font);
+    	text.setFill(color);
+		root.getChildren().add(text);
+	}	
 }
