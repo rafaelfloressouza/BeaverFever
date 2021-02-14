@@ -1,21 +1,28 @@
 package screens;
 
 import characters.Player;
+import items.Money;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import tools.FieldOfView;
 import tools.Load;
+import tools.Point;
 import world.World;
 
 public class MainScreen extends Screen {
 	private World world;
 	private Player player;
+	private Font mainfont;
 
 	public MainScreen(int width, int height) {
 		super(width, height);
 		world = new World(30,30);
 		world.generate();
+		
+		mainfont = Load.newFont("SDS_8x8.ttf", 24);
 		
 		//Creates the player and adds it to the world
 		player = Player.getNewHuman(world);
@@ -39,6 +46,7 @@ public class MainScreen extends Screen {
 		// Using that info, displays visible tiles and creatures on a grid
 		displayTiles(tilewidth, tileheight, leftmost, topmost);
 		displayCreatures(tilewidth, tileheight, leftmost, topmost);
+		displayUI();
 	}
 	
 	@Override
@@ -73,11 +81,18 @@ public class MainScreen extends Screen {
 				int wy = y + top;
 				if (player.canSee(wx, wy)) {
 					draw(root, player.tile(wx, wy).image(), x*48,y*48);
+					displayBill(world.getBill(new Point(wx,wy)),wx,wy,x,y, 0.0);
 				} else {
 					draw(root, player.tile(wx, wy).image(), x*48,y*48, -0.7);
+					displayBill(world.getBill(new Point(wx,wy)),wx,wy,x,y, -0.7);
 				}
 			}
 		}
+	}
+	private void displayBill(Money m, int wx, int wy, int x, int y, double tint) {
+		if (m == null || !player.hasSeen(wx, wy))
+			return;
+		draw(root, m.image(), x*48, y*48, tint);
 	}
 	private void displayCreatures(int width, int height, int left, int top) {
 		for (Player c : world.players()) {
@@ -88,6 +103,9 @@ public class MainScreen extends Screen {
 				displayHealth(c, (c.x-left)*48, (c.y-top)*48);
 			}
 		}
+	}
+	private void displayUI() {
+		write(root, "$" + player.score(), 800, 764, mainfont, Color.WHITE);
 	}
 	
 	/**
