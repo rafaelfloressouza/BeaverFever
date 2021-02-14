@@ -55,7 +55,7 @@ public class World {
 	public void generate() {
 		WorldBuilder b = new WorldBuilder(width, height);
 		this.tiles = b.generate(200);
-		generateBills();
+//		generateBills();
 	}
 	
 	/**

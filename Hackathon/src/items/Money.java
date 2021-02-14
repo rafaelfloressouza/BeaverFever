@@ -2,7 +2,10 @@ package items;
 import javafx.scene.image.Image;
 
 public class Money {
-	
+
+	// Bill Types
+	public static enum Bill_Type {FIVE, TWENTY, HUNDRED};
+
 	//value of the money
 	private int value;
 	public int value() {return value;}
@@ -16,5 +19,4 @@ public class Money {
 		this.value = value;
 		this.image = image;
 	}
-	
 }
