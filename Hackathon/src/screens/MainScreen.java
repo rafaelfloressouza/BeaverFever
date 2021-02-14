@@ -1,5 +1,6 @@
 package screens;
 
+import characters.Message;
 import characters.Player;
 import items.Money;
 import javafx.scene.image.Image;
@@ -15,14 +16,17 @@ import world.World;
 public class MainScreen extends Screen {
 	private World world;
 	private Player player;
-	private Font mainfont;
+	private Font blockfont;
+	private Font smallblock;
 
 	public MainScreen(int width, int height) {
 		super(width, height);
 		world = new World(30,30);
 		world.generate();
 		
-		mainfont = Load.newFont("SDS_8x8.ttf", 24);
+		blockfont = Load.newFont("SDS_8x8.ttf", 24);
+		smallblock = Load.newFont("SDS_8x8.ttf", 18);
+		//textfont = Load.newFont("DejaVuSansMono.ttf", 24);
 		
 		//Creates the player and adds it to the world
 		player = Player.getNewHuman(world);
@@ -34,8 +38,8 @@ public class MainScreen extends Screen {
 	@Override
 	public void displayOutput() {
 		// How many tiles can be displayed on the screen at once
-		int tilewidth = width / 48;
-		int tileheight = height / 48;
+		int tilewidth = width / 42;
+		int tileheight = height / 42;
 		
 		// Gets the leftmost and topmost tile to be displayed to the player
 		int leftmost = getLeftmostTile(tilewidth);
@@ -80,10 +84,10 @@ public class MainScreen extends Screen {
 				int wx = x + left;
 				int wy = y + top;
 				if (player.canSee(wx, wy)) {
-					draw(root, player.tile(wx, wy).image(), x*48,y*48);
+					draw(root, player.tile(wx, wy).image(), x*42,y*42);
 					displayBill(world.getBill(new Point(wx,wy)),wx,wy,x,y, 0.0);
 				} else {
-					draw(root, player.tile(wx, wy).image(), x*48,y*48, -0.7);
+					draw(root, player.tile(wx, wy).image(), x*42,y*42, -0.7);
 					displayBill(world.getBill(new Point(wx,wy)),wx,wy,x,y, -0.7);
 				}
 			}
@@ -92,20 +96,25 @@ public class MainScreen extends Screen {
 	private void displayBill(Money m, int wx, int wy, int x, int y, double tint) {
 		if (m == null || !player.hasSeen(wx, wy))
 			return;
-		draw(root, m.image(), x*48, y*48, tint);
+		draw(root, m.image(), x*42, y*42, tint);
 	}
 	private void displayCreatures(int width, int height, int left, int top) {
 		for (Player c : world.players()) {
 			if (c.x >= left && c.x < left + width &&
 				c.y >= top && c.y < top + height &&
 				player.canSee(c.x, c.y)) {
-				draw(root, c.image(), (c.x-left)*48, (c.y-top)*48);
-				displayHealth(c, (c.x-left)*48, (c.y-top)*48);
+				draw(root, c.image(), (c.x-left)*42, (c.y-top)*42);
+				displayHealth(c, (c.x-left)*42, (c.y-top)*42);
 			}
 		}
 	}
 	private void displayUI() {
-		write(root, "$" + player.score(), 800, 764, mainfont, Color.WHITE);
+		write(root, "$" + player.score(), 800, 764, blockfont, Color.WHITE);
+		
+		for (int i = 0; i < player.messages().size(); i++) {
+			Message m = player.messages().get(i);
+			write(root, m.text(), 16, height - 10 - player.messages().size() * 20 + i*20, smallblock, m.color());
+		}
 	}
 	
 	/**
@@ -151,9 +160,9 @@ public class MainScreen extends Screen {
 			i = healthRed;
 		draw(root, i, x, y + 36);
 	}
-	private static Image healthGreen = Load.newImage("icons/health-bar.png", 0, 0, 48, 8);
-	private static Image healthYellow = Load.newImage("icons/health-bar.png", 0, 8, 48, 8);
-	private static Image healthOrange = Load.newImage("icons/health-bar.png", 0, 16, 48, 8);
-	private static Image healthRed = Load.newImage("icons/health-bar.png", 0, 24, 48, 8);
+	private static Image healthGreen = Load.newImage("icons/health-bar.png", 0, 0, 42, 8);
+	private static Image healthYellow = Load.newImage("icons/health-bar.png", 0, 8, 42, 8);
+	private static Image healthOrange = Load.newImage("icons/health-bar.png", 0, 16, 42, 8);
+	private static Image healthRed = Load.newImage("icons/health-bar.png", 0, 24, 42, 8);
 
 }
