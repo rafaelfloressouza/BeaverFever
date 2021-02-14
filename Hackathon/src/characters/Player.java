@@ -104,7 +104,11 @@ public class Player {
 	/**
 	 * The attack algorithm
 	 */
-	public void attack(Player target) {
+	public void attackTarget(Player target) {
+		//First, make sure this isnt AI friendly fire
+		if (type == PlayerType.AI && target.type() == PlayerType.AI)
+			return;
+		
 		//First generate a random number from 0 to 10 and add that to your attack to see if the other player dodges
 		int roll = (int)(Math.random() * 11);
 		if (roll + attack() > target.dodging()) {
@@ -140,7 +144,7 @@ public class Player {
 		
 		Player other = world.player(x+sx, y+sy);
 		if (other != null && other != this) {
-			attack(other);
+			attackTarget(other);
 		} else {
 			x += sx;
 			y += sy;
