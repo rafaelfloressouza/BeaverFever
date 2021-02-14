@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import screens.Screen;
 import screens.StartScreen;
+import tools.Load;
 import javafx.scene.input.KeyEvent;
 
 public class Main extends Application {
@@ -22,7 +23,7 @@ public class Main extends Application {
 			//Sets up some window specific things
 			primaryStage.setTitle("Beaver Fever");
 			primaryStage.setResizable(false); 		//If the window can be resized (no)
-			//primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("resources/window-icon.png"))); //Window icon
+			primaryStage.getIcons().add(Load.newImage("icons/beaver-small.png"));
 			
 			//Initializes the first game screen, StartScreen
             screen = new StartScreen(width, height);

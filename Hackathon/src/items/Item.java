@@ -5,13 +5,17 @@ import tools.Load;
 
 public enum Item {
 
-    FIVE(5, 0, Load.newImage("objects/money5.png")),
-    TWENTY(20, 0, Load.newImage("objects/money20.png")),
-    HUNDRED(100, 0, Load.newImage("objects/money100.png")),
-    BACON(0, 3, Load.newImage("objects/bacon.png")),
-    POUTINE(0, 5,Load.newImage("objects/poutine.png")),
-    SYRUP(0, 10, Load.newImage("objects/maple.png"));
+    FIVE("$5", 5, 0, Load.newImage("objects/money5.png")),
+    TWENTY("$20", 20, 0, Load.newImage("objects/money20.png")),
+    HUNDRED("$100", 100, 0, Load.newImage("objects/money100.png")),
+    BACON("Bacon", 0, 3, Load.newImage("objects/bacon.png")),
+    POUTINE("Poutine", 0, 5,Load.newImage("objects/poutine.png")),
+    SYRUP("Maple Syrup", 0, 10, Load.newImage("objects/maple.png"));
 
+	//name of the item, for player interaction
+	private String name;
+	public String getName() { return name; }
+	
     //value of the money
     private int value;
     public int value() {return value;}
@@ -25,7 +29,8 @@ public enum Item {
     public Image image() {return image;}
 
     //constructor for money
-    private Item(int value, int food, Image image) {
+    private Item(String name, int value, int food, Image image) {
+    	this.name = name;
         this.value = value;
         this.food = food;
         this.image = image;

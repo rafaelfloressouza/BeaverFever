@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import tools.FieldOfView;
 import tools.Load;
@@ -27,7 +28,7 @@ public class MainScreen extends Screen {
 		world.generate();
 		
 		blockfont = Load.newFont("SDS_8x8.ttf", 24);
-		smallblock = Load.newFont("SDS_8x8.ttf", 18);
+		smallblock = Load.newFont("SDS_8x8.ttf", 14);
 		
 		//Creates the player and adds it to the world
 		player = Player.getNewHuman(world);
@@ -42,7 +43,7 @@ public class MainScreen extends Screen {
 	public void displayOutput() {
 		// How many tiles can be displayed on the screen at once
 		int tilewidth = width / 42;
-		int tileheight = height / 42;
+		int tileheight = (height / 42) - 2;
 		
 		// Gets the leftmost and topmost tile to be displayed to the player
 		int leftmost = getLeftmostTile(tilewidth);
@@ -115,13 +116,34 @@ public class MainScreen extends Screen {
 			}
 		}
 	}
+	
+	/**
+	 * Display some basic user UI
+	 */
+	private static Image playerbar = Load.newImage("icons/player-bar.png");
 	private void displayUI() {
-		write(root, "$" + player.score(), 800, 764, blockfont, Color.WHITE);
-		
+		draw(root, playerbar, 0, 692);
+		write(root, "$" + player.score(), 1060, 778, blockfont, Color.WHITE);
 		for (int i = 0; i < player.messages().size(); i++) {
 			Message m = player.messages().get(i);
-			write(root, m.text(), 16, height - 4 - player.messages().size() * 20 + i*20, smallblock, m.color());
+			write(root, m.text(), 332, height - 8 - (player.messages().size()-1) * 18 + i*18, smallblock, m.color());
 		}
+		drawHealthRectangle();
+		write(root, player.hp() + "/" + player.maxHP(), 108, 786, blockfont, Color.WHITE);
+	}
+	/**
+	 * Calculate and draw a rectangle to fill the preset health bar
+	 */
+	private void drawHealthRectangle() {
+		int sx = 34;
+		int sy = 758;
+		int fx = 297;
+		int fy = 789;
+		int length = (int)((fx - sx) * ((double)(player.hp()) / (double)(player.maxHP())));
+		int height = fy - sy;
+		Rectangle r =  new Rectangle(sx,sy,length,height);
+		r.setFill(Color.RED);
+		root.getChildren().add(r);
 	}
 	
 	/**
@@ -150,33 +172,36 @@ public class MainScreen extends Screen {
 			getRandomEnemy();
 	}
 	
+	/**
+	 * Randomly select an enemy from the list of available enemies
+	 */
 	public void getRandomEnemy() {
-		switch((int)(Math.random()*(10))) {
-		case 1:
+		switch((int)(Math.random()*(9))) {
+		case 0:
 			Player.getNewRedHockey(world, player);
 			break;
-		case 2:
+		case 1:
 			Player.getNewBlueHockey(world, player);
 			break;
-		case 3:
+		case 2:
 			Player.getNewWhiteHockey(world, player);
 			break;
-		case 4:
+		case 3:
 			Player.getNewOrangeHockey(world, player);
 			break;
-		case 5:
+		case 4:
 			Player.getBlueCivilian(world, player);
 			break;
-		case 6:
+		case 5:
 			Player.getBrownCivilian(world, player);
 			break;
-		case 7:
+		case 6:
 			Player.getTealCivilian(world, player);
 			break;
-		case 8:
+		case 7:
 			Player.getYellowCivilian(world, player);
 			break;
-		case 9:
+		default:
 			Player.getNewCanadaGoose(world, player);
 			break;
 		}

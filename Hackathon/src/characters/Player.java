@@ -157,7 +157,7 @@ public class Player {
 						notify("You picked up $" + i.value() + "!", Color.YELLOW);
 					} if (i.food() > 0) {
 						changeHP(i.food());
-						notify("You ate a " + i.name() + "!", Color.LAWNGREEN);
+						notify("You ate " + i.getName() + "!", Color.LAWNGREEN);
 					}
 					world.removeItem(p);
 				}
@@ -213,7 +213,7 @@ public class Player {
   		if (messages == null)
   			return;
   		messages.add(new Message(text,color));
-  		if (messages.size()>10)
+  		if (messages.size()>5)
   			messages.remove(0);
   	}
   	
