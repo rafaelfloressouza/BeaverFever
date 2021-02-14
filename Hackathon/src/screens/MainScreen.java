@@ -178,6 +178,7 @@ public class MainScreen extends Screen {
 		}
 		drawHealthRectangle();
 		write(root, player.hp() + "/" + player.maxHP(), 108, 786, blockfont, Color.WHITE);
+		
 		if(player.x == timHortons.x && player.y == timHortons.y &&  player.score() >= winAmount){
 			drawCentered(root, Load.newImage("icons/WinPrompt.png"), this.width, this.height, 0.0);
 		}
