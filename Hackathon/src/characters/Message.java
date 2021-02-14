@@ -8,9 +8,9 @@ public class Message {
 	private Color color;
 	
 	//constructor for the message
-	public Message (String message, Color color) {
+	public Message (String message, Color color2) {
 		this.message = message;
-		this.color = color;
+		this.color = color2;
 	}
 	
 	//return the string associated with the message

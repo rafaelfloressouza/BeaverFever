@@ -1,6 +1,6 @@
 package characters;
 
-
+import items.Money;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import tools.FieldOfView;
@@ -36,6 +36,10 @@ public class Player {
 	// A reference to this creatures AI
 	private AI ai;
     public void setAI(AI ai) { this.ai = ai; }
+    
+    // This players score
+    private int score;
+    public int score() { return score; }
 	
 	// Constructor
 	public Player(World world, String name, Image image, PlayerType type) {
@@ -128,6 +132,9 @@ public class Player {
 		} else {
 			x += sx;
 			y += sy;
+			if (world.containsBill(new Point(x,y))) {
+				score += world.getBill(new Point(x,y)).value();
+			}
 		}
 	}
 	
@@ -150,6 +157,9 @@ public class Player {
 	public boolean canSee(int wx, int wy) {
 		return ai.canSee(wx, wy);
 	}
+	public boolean hasSeen(int wx, int wy) {
+		return fov.hasSeen(wx, wy);
+	}
 	public Tile tile(int wx, int wy) {
     	if (canSee(wx, wy))
             return world.tile(wx, wy);
@@ -165,6 +175,18 @@ public class Player {
     	else
     		return fov.tile(wx, wy);
     }
+    
+    //Character's arraylist of messages
+  	private GetMessages getMessages;
+  	
+  	//notify the player and add messages
+  	public void Notify(Player p, String message, Color color) {
+  		p.getMessages.add(new Message(message, color));
+  	}
+  	
+  	public void NotifyAll(String message, Color color) {
+  		getMessages.add(new Message(message, color));
+  	}
 
 	/**
 	 * A way to generate new players to populate the world with
@@ -180,8 +202,8 @@ public class Player {
 		new PlayerAI(p);
 		return p;
 	}
-	public static Player getNewEnemy(World world, Player player){
-		Player p = new Player(world, "Enemy", Load.newImage("players/beaver.png"), PlayerType.AI);
+	public static Player getNewRedHockey(World world, Player player){
+		Player p = new Player(world, "Red Hockey Player", Load.newImage("players/hockey_red1.png"), PlayerType.AI);
 		p.setVisionRadius(9);
 		Point spawn = world.getEmptySpace();
 		p.x = spawn.x;
@@ -191,18 +213,15 @@ public class Player {
 		new EnemyAI(p, player);
 		return p;
 	}
-	
-	//Character's arraylist of messages
-	private GetMessages getMessages;
-	
-	//notify the playt
-	public void Notify(PlayerType type, String message, Color color) {
-		if (type == PlayerType.HUMAN) {
-			getMessages.add(new Message(message, color));
-		}
-	}
-	
-	public void NotifyAll(String message, Color color) {
-		getMessages.add(new Message(message, color));
+	public static Player getNewCanadaGoose(World world, Player player){
+		Player p = new Player(world, "Canada Goose", Load.newImage("players/goose.png"), PlayerType.AI);
+		p.setVisionRadius(9);
+		Point spawn = world.getEmptySpace();
+		p.x = spawn.x;
+		p.y = spawn.y;
+		world.addPlayer(p);
+		p.setStats(12, 4, 8, 2, 5);
+		new EnemyAI(p, player);
+		return p;
 	}
 }
