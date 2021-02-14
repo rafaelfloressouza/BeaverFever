@@ -44,19 +44,19 @@ public enum Item {
      * Returns a random bill type
      */
     public static Item getRandomBillType(){
-        int randNum = (int)(Math.random() * 5);
-
-        if (randNum == 0){
+        double i = Math.random();
+        
+        if (i < 0.1)		//10% chance
             return FIVE;
-        } else if (randNum == 1){
+        else if (i < 0.3)	//20% chance
             return TEN;
-        } else if (randNum == 2) {
+        else if (i < 0.65)	//35% chance
         	return TWENTY;
-        } else if (randNum == 3) {
+        else if (i < 0.9)	//25% chance
         	return FIFTY;
-        } else {
+        else				//10% chance
             return HUNDRED;
-        }
+        // Average value for a dropped bill is $32
     }
 
     public static Item getRandomFood(){

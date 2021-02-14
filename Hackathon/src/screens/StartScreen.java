@@ -20,7 +20,7 @@ public class StartScreen extends Screen {
 		} else if (code.equals(KeyCode.ESCAPE)){
 			System.exit(0);
 		} else if (code.equals(KeyCode.I)) {
-			s = new HelpScreen(this.width, this.height);
+			s = new HelpScreen(this.width, this.height, this);
 		}
 
 		return s;
