@@ -3,8 +3,8 @@ import javafx.scene.image.Image;
 import tools.Load;
 
 public enum Money {
-	FIVE(5, Load.newImage("objects/money5.png")),
-	TWENTY(20, Load.newImage("objects/money20.png")),
+	FIVE(5, Load.newImage("objects/money5.png")), 
+	TWENTY(20, Load.newImage("objects/money20.png")), 
 	HUNDRED(100, Load.newImage("objects/money100.png"));
 
 	//value of the money
