@@ -1,6 +1,8 @@
 package characters;
 
+
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import tools.FieldOfView;
 import tools.Load;
 import tools.Point;
@@ -81,11 +83,9 @@ public class Player {
 	}
 	
 	/**
-	 * When a player dies, drop a random bill and remove them from the world
+	 * When a player dies, remove them from the world
 	 */
 	public void die() {
-		Money bill = World.getRandomBillType();
-		world.setBill(new Point(x,y), bill);
 		world.removePlayer(this);
 	}
 	
@@ -99,7 +99,7 @@ public class Player {
 			//If the target fails to dodge, they lose HP
 			target.changeHP(-getDamage());
 		} else {
-			//Print some "you miss" notification
+			getMessages.add(new Message(target.name()+ " miseed", Color.YELLOW));
 		}
 	}
 	
