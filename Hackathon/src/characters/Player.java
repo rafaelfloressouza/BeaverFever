@@ -4,6 +4,7 @@ import com.sun.prism.paint.Color;
 
 import javafx.scene.image.Image;
 import tools.FieldOfView;
+import tools.Load;
 import tools.Point;
 import world.Tile;
 import world.World;
@@ -45,6 +46,69 @@ public class Player {
 	}
 	
 	/**
+	 * Combat Stats
+	 */
+	private int hp;
+	public int hp() { return hp; }
+	private int maxHP;
+	public int maxHP() { return maxHP; }
+	public void changeHP(int x) { 
+		hp = Math.min(maxHP, hp + x);
+		if (hp <= 0)
+			die();
+	}
+	private int attack;
+	public int attack() { return attack; }
+	private int minDamage;
+	private int maxDamage;
+	public void setDamage(int min, int max) {
+		minDamage = min;
+		maxDamage = max;
+	}
+	public int getDamage() {
+		return (int)(Math.random() * (maxDamage - minDamage) + minDamage);
+	}
+	private int dodging;
+	public int dodging() { return dodging; }
+	/**
+	 * Basic method to set the starting stats of a creature
+	 */
+	public void setStats(int hp, int attack, int dodging, int minDamage, int maxDamage) {
+		this.hp = hp;
+		this.maxHP = hp;
+		this.attack = attack;
+		this.dodging = dodging;
+		this.minDamage = minDamage;
+		this.maxDamage = maxDamage;
+	}
+	
+	/**
+	 * When a player dies, remove them from the world
+	 */
+	public void die() {
+		world.removePlayer(this);
+	}
+	
+	/**
+	 * The attack algorithm
+	 */
+	public void attack(Player target) {
+		//First generate a random number from 0 to 10 and add that to your attack to see if the other player dodges
+		int roll = (int)(Math.random() * 11);
+		if (roll + attack() > target.dodging()) {
+			//If the target fails to dodge, they lose HP
+			target.changeHP(-getDamage());
+		} else {
+			//Print some "you miss" notification
+		}
+	}
+	
+	/**
+	 * Calls this ai to take the turn
+	 */
+	public void takeTurn() { ai.takeTurn(); }
+	
+	/**
 	 * Moves in the specified direction
 	 * @param sx:	relative x direction
 	 * @param sy:	relative y direction
@@ -57,8 +121,14 @@ public class Player {
 			return;
 		if (world.tile(x + sx, y + sy).isWall())
 			return;
-		x += sx;
-		y += sy;
+		
+		Player other = world.player(x+sx, y+sy);
+		if (other != null && other != this) {
+			attack(other);
+		} else {
+			x += sx;
+			y += sy;
+		}
 	}
 	
 	/**
@@ -97,17 +167,28 @@ public class Player {
     }
 
 	/**
-	 * A creature factory
+	 * A way to generate new players to populate the world with
 	 */
-	public static Player getNewPlayer(World world, String name, Image image, PlayerType type){
-		Player p = new Player(world, name, image, type);
+	public static Player getNewHuman(World world){
+		Player p = new Player(world, "Player", Load.newImage("players/beaver.png"), Player.PlayerType.HUMAN);
 		p.setVisionRadius(9);
 		Point spawn = world.getEmptySpace();
 		p.x = spawn.x;
 		p.y = spawn.y;
-		if (type == PlayerType.HUMAN)
-			new PlayerAI(p);
+		p.setStats(20, 5, 10, 3, 7);
 		world.addPlayer(p);
+		new PlayerAI(p);
+		return p;
+	}
+	public static Player getNewEnemy(World world, Player player){
+		Player p = new Player(world, "Enemy", Load.newImage("players/beaver.png"), PlayerType.AI);
+		p.setVisionRadius(9);
+		Point spawn = world.getEmptySpace();
+		p.x = spawn.x;
+		p.y = spawn.y;
+		world.addPlayer(p);
+		p.setStats(10, 4, 8, 1, 4);
+		new EnemyAI(p, player);
 		return p;
 	}
 	
