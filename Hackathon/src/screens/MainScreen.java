@@ -90,7 +90,7 @@ public class MainScreen extends Screen {
 			return new HelpScreen(width, height, this);
 
 		// Winning condition
-		if (player.x == timHortons.x && player.y == timHortons.y && player.score() >= 10 && code.equals(KeyCode.SPACE)) {
+		if (player.x == timHortons.x && player.y == timHortons.y && player.score() >= winAmount && code.equals(KeyCode.SPACE)) {
 				return new EndGameScreen(width, height, true);
 		}
 		
@@ -178,6 +178,9 @@ public class MainScreen extends Screen {
 		}
 		drawHealthRectangle();
 		write(root, player.hp() + "/" + player.maxHP(), 108, 786, blockfont, Color.WHITE);
+		if(player.x == timHortons.x && player.y == timHortons.y &&  player.score() >= winAmount){
+			drawCentered(root, Load.newImage("players/beaver.png"), this.width, this.height, 0.0);
+		}
 	}
 
 	/**
