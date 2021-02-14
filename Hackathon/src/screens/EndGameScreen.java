@@ -2,6 +2,8 @@ package screens;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import tools.Load;
 
 public class EndGameScreen extends Screen{
@@ -34,8 +36,12 @@ public class EndGameScreen extends Screen{
     public void displayOutput() {
         if(type){    // If win screen....
         	draw(root, Load.newImage("full-screens/win.png"), 0,0);
+            write(root, "[SPACE to Restart Game]", 50, this.height - 100,  Load.newFont("SDS_8x8.ttf", 18), Color.WHITE);
+            write(root, "[ESC to Exit Game]", 50, this.height - 50,  Load.newFont("SDS_8x8.ttf", 18), Color.WHITE);
         } else {     // If lose screen...
         	draw(root, Load.newImage("full-screens/lose.png"), 0,0);
+            write(root, "[SPACE to Restart Game]", 50, this.height - 100,  Load.newFont("SDS_8x8.ttf", 18), Color.WHITE);
+            write(root, "[ESC to Exit Game]", 50, this.height - 50,  Load.newFont("SDS_8x8.ttf", 18), Color.WHITE);
         }
     }
 }
