@@ -152,7 +152,7 @@ public abstract class Screen {
 	 * @param font:		Font type
 	 * @param color:	Color information
 	 * */
-    public void writeCentered(Group root, String s, int width, int height, Font font, Color color){
+    public static void writeCentered(Group root, String s, int width, int height, Font font, Color color){
     	Text text = new Text();
     	text.setText(s);
     	int x = (int) ( (width / 2) - (text.prefWidth(-1)));
