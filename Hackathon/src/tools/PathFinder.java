@@ -5,8 +5,13 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import characters.Player;
-import world.World;
 
+
+/**
+ * Code taken from previous project
+ * Simple implementation of A* pathfinding
+ * https://www.geeksforgeeks.org/a-search-algorithm/
+ */
 public class PathFinder {
 	private ArrayList<Point> open;
 	private ArrayList<Point> closed;

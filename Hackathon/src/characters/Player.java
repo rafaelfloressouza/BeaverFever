@@ -1,5 +1,6 @@
 package characters;
 
+import items.Money;
 import javafx.scene.image.Image;
 import tools.FieldOfView;
 import tools.Load;
@@ -81,9 +82,11 @@ public class Player {
 	}
 	
 	/**
-	 * When a player dies, remove them from the world
+	 * When a player dies, drop a random bill and remove them from the world
 	 */
 	public void die() {
+		Money bill = World.getRandomBillType();
+		world.setBill(new Point(x,y), bill);
 		world.removePlayer(this);
 	}
 	

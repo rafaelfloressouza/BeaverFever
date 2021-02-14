@@ -13,7 +13,9 @@ public class World {
 	public int width() { return width; }
 	public int height() { return height; }
 	private Tile[][] tiles;
-	private HashMap<Point, Money.Bill_Type> bills;
+	private HashMap<Point, Money> bills;
+	public void setBill(Point p, Money m) { bills.put(p, m); }
+	
 
 	/**
 	 * A list of all players
@@ -109,18 +111,15 @@ public class World {
 	/**
 	* Returns a random bill type
 	*/
-	private Money.Bill_Type getRandomBillType(){
-		Random rn = new Random();
-		int randNum = rn.nextInt(3 - 1 + 1) + 1;
-		Money.Bill_Type billType;
+	public static Money getRandomBillType(){
+		int randNum = (int)(Math.random() * 3);
 
-		if(randNum == 1){
-			billType = Money.Bill_Type.FIVE;
-		}else if(randNum == 2){
-			billType = Money.Bill_Type.TWENTY;
-		}else{
-			billType = Money.Bill_Type.HUNDRED;
+		if (randNum == 0){
+			return Money.FIVE;
+		} else if (randNum == 1){
+			return Money.TWENTY;
+		} else {
+			return Money.HUNDRED;
 		}
-		return billType;
 	}
 }
