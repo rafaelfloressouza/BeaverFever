@@ -121,7 +121,7 @@ public class Player {
 			return;
 		
 		Player other = world.player(x+sx, y+sy);
-		if (other != null) {
+		if (other != null && other != this) {
 			attack(other);
 		} else {
 			x += sx;
