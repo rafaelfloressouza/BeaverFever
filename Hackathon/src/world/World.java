@@ -1,18 +1,20 @@
 package world;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import characters.Player;
+import items.Money;
 import tools.Point;
 
 public class World {
+
 	private int width;
 	private int height;
 	public int width() { return width; }
 	public int height() { return height; }
 	private Tile[][] tiles;
-	
+	private HashMap<Point, Money.Bill_Type> bills;
+
 	/**
 	 * A list of all players
 	 */
@@ -43,7 +45,8 @@ public class World {
 		this.width = width;
 		this.height = height;
 		tiles = new Tile[width][height];
-		this.players = new ArrayList<Player>();
+		this.players = new ArrayList<>();
+		this.bills = new HashMap<>();
 	}
 	
 	/**
@@ -51,7 +54,8 @@ public class World {
 	 */
 	public void generate() {
 		WorldBuilder b = new WorldBuilder(width, height);
-		tiles = b.generate(200);
+		this.tiles = b.generate(200);
+		generateBills();
 	}
 	
 	/**
@@ -65,5 +69,58 @@ public class World {
 			y = (int)(Math.random() * height);
 		}
 		return new Point(x,y);
+	}
+
+	/**
+	 * Checkers whether a tile contains a bill
+	 */
+	public Boolean containsBill(Point p){
+		return bills.containsKey(p);
+	}
+
+	/**
+	 * Populates random empty tiles with bills making sure tiles are separated by n number of units
+	 */
+	public void generateBills(){
+		int numBills = (int) ( (this.width * this.height) * 0.1);
+		double distance = 6.0;
+		Point curPoint ;
+		Iterator it;
+		Boolean tooClose = false;
+
+		for(int i = 0; i < numBills;) {
+			curPoint = getEmptySpace();
+			it = bills.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry pair = (Map.Entry) it.next();
+				if (curPoint.distance((Point) pair.getKey()) < distance) {
+					tooClose = true;
+					break;
+				}
+			}
+			if(!tooClose){
+				bills.put(curPoint, getRandomBillType());
+				i++;
+			}
+			tooClose = false;
+		}
+	}
+
+	/**
+	* Returns a random bill type
+	*/
+	private Money.Bill_Type getRandomBillType(){
+		Random rn = new Random();
+		int randNum = rn.nextInt(3 - 1 + 1) + 1;
+		Money.Bill_Type billType;
+
+		if(randNum == 1){
+			billType = Money.Bill_Type.FIVE;
+		}else if(randNum == 2){
+			billType = Money.Bill_Type.TWENTY;
+		}else{
+			billType = Money.Bill_Type.HUNDRED;
+		}
+		return billType;
 	}
 }
