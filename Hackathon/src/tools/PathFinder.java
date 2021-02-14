@@ -78,7 +78,7 @@ public class PathFinder {
 	}
 
 	private void checkNeighbors(Player player, Point end, Point closest) {
-		for (Point neighbor : closest.neighbors8()) {
+		for (Point neighbor : closest.neighbors4()) {
 			if (closed.contains(neighbor)
 					|| !player.canEnter(neighbor.x, neighbor.y)
 					&& !neighbor.equals(end))
