@@ -15,7 +15,6 @@ public class World {
 	private Tile[][] tiles;
 	private HashMap<Point, Money> bills;
 	public void setBill(Point p, Money m) { bills.put(p, m); }
-	
 
 	/**
 	 * A list of all players
@@ -57,7 +56,7 @@ public class World {
 	public void generate() {
 		WorldBuilder b = new WorldBuilder(width, height);
 		this.tiles = b.generate(200);
-//		generateBills();
+		generateBills();
 	}
 	
 	/**
@@ -85,26 +84,11 @@ public class World {
 	 */
 	public void generateBills(){
 		int numBills = (int) ( (this.width * this.height) * 0.1);
-		double distance = 6.0;
 		Point curPoint ;
-		Iterator it;
-		Boolean tooClose = false;
 
-		for(int i = 0; i < numBills;) {
+		for(int i = 0; i < numBills; i++) {
 			curPoint = getEmptySpace();
-			it = bills.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry pair = (Map.Entry) it.next();
-				if (curPoint.distance((Point) pair.getKey()) < distance) {
-					tooClose = true;
-					break;
-				}
-			}
-			if(!tooClose){
-				bills.put(curPoint, getRandomBillType());
-				i++;
-			}
-			tooClose = false;
+			bills.put(curPoint, getRandomBillType());
 		}
 	}
 
