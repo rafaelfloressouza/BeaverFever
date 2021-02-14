@@ -103,7 +103,7 @@ public class Player {
 			//If the target fails to dodge, they lose HP
 			target.changeHP(-getDamage());
 		} else {
-			getMessages.add(new Message(target.name()+ " miseed", Color.YELLOW));
+			//getMessages.add(new Message(target.name()+ " missed", Color.YELLOW));
 		}
 	}
 	
