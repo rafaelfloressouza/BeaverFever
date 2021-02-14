@@ -7,8 +7,6 @@ import tools.Load;
 public class StartScreen extends Screen {
 	public StartScreen(int width, int height) {
 		super(width,height);
-		//f = Load.newFont("DejaVuSansMono.ttf", 16);
-		//f = Load.newFont("SDS_8x8.ttf", 16);	//Uncomment for a more blocky font
 	}
 
 	@Override
@@ -30,6 +28,6 @@ public class StartScreen extends Screen {
 
 	@Override
 	public void displayOutput() {
-		draw(root, Load.newImage("players/t.jpg"),0, 0);
+		draw(root, Load.newImage("full-screens/starting_screen.png"),0, 0);
 	}
 }

@@ -2,23 +2,14 @@ package screens;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import tools.Load;
 
 public class EndGameScreen extends Screen{
-
-    private String gameOverMsg, winMessage, loseMessage;
-    private Font font;
     private Boolean type;
 
     public EndGameScreen(int width, int height, Boolean type){
         super(width, height);
-        this.gameOverMsg =  "Game Over ";
-        this.winMessage = "Congrats, you won! ";
-        this.loseMessage = "Oops, you lose!";
         this.type = type;
-        font = Load.newFont("SDS_8x8.ttf", 16);
     }
 
     @Override
@@ -43,16 +34,10 @@ public class EndGameScreen extends Screen{
 
     @Override
     public void displayOutput() {
-
-        String actualMsg = "";
         if(type){
-            actualMsg = gameOverMsg;
-        }else if(type){
-            actualMsg = winMessage;
-        }else if(!type){
-            actualMsg = loseMessage;
+        	draw(root, Load.newImage("full-screens/win.png"), 0,0);
+        } else {
+        	draw(root, Load.newImage("full-screens/lose.png"), 0,0);
         }
-
-        writeCentered(root, actualMsg, width, height, font, Color.WHITE);
     }
 }
