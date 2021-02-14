@@ -17,7 +17,7 @@ public class GetMessages {
 			messagesLog.add(message);
 		}
 		else {
-			Messages.add(message);
+			messagesLog.add(message);
 		}
 	}
 	

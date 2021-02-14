@@ -1,5 +1,7 @@
 package characters;
 
+import com.sun.prism.paint.Color;
+
 import javafx.scene.image.Image;
 import tools.FieldOfView;
 import tools.Point;
@@ -7,7 +9,7 @@ import world.Tile;
 import world.World;
 
 public class Player {
-
+	
 	// Others
 	public enum PlayerType{AI, HUMAN};
 
@@ -107,5 +109,19 @@ public class Player {
 			new PlayerAI(p);
 		world.addPlayer(p);
 		return p;
+	}
+	
+	//Character's arraylist of messages
+	private GetMessages getMessages;
+	
+	//notify the playt
+	public void Notify(PlayerType type, String message, Color color) {
+		if (type == PlayerType.HUMAN) {
+			getMessages.add(new Message(message, color));
+		}
+	}
+	
+	public void NotifyAll(String message, Color color) {
+		getMessages.add(new Message(message, color));
 	}
 }
