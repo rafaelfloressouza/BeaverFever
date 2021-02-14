@@ -1,7 +1,7 @@
 package items;
 import javafx.scene.image.Image;
 
-public class money {
+public class Money {
 	
 	//value of the money
 	private int value;
@@ -12,7 +12,7 @@ public class money {
 	public Image image() {return image;}
 	
 	//constructor for money
-	public money (int value, Image image) {
+	public Money (int value, Image image) {
 		this.value = value;
 		this.image = image;
 	}
