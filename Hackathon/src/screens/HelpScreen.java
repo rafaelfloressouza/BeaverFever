@@ -35,6 +35,7 @@ public class HelpScreen extends Screen {
 	 * */
 	@Override
 	public void displayOutput() {
+		draw(root, Load.newImage("full-screens/canada.png"), 0, 0, -0.8);
 		String actualMsg =
 				"Welcome to Beaver Fever, where you play as a beaver to collect as much money as possible while fighting off real Canadian dangers. "
 				+ "When we get a little hungry fighting everything off, you can replenish yourself by treating yourself to Canada's national treats, such as poutine. bacon, and maple syrup. \n"
