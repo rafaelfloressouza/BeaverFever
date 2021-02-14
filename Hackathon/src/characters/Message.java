@@ -1,16 +1,21 @@
 package characters;
 
-import java.util.HashMap;
+import com.sun.prism.paint.Color;
 
 public class Message {
-
-        //Hashmap storing the messages
-        private HashMap<String, Object> messages;
-
-        //Constructor for messages hashmap
-        public Message () {
-            this.messages = new HashMap<String, Object>();
-        }
-
-        public String getMessage(){return "";}
+	//Instance variables for Messages
+	private String message = "";
+	private Color color;
+	
+	//constructor for the message
+	public Message (String message, Color color) {
+		this.message = message;
+		this.color = color;
+	}
+	
+	//return the string associated with the message
+	public String getMessage () {return message;}
+	
+	//return the color associated with the message
+	public Color getColor() {return color;}
 }

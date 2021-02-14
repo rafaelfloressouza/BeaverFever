@@ -13,7 +13,7 @@ public class World {
 	public int width() { return width; }
 	public int height() { return height; }
 	private Tile[][] tiles;
-	private HashMap<Point, Money.Bill_Type> bills;
+	private HashMap<Point, Money> bills;
 
 	/**
 	 * A list of all players
@@ -55,7 +55,7 @@ public class World {
 	public void generate() {
 		WorldBuilder b = new WorldBuilder(width, height);
 		this.tiles = b.generate(200);
-//		generateBills();
+		generateBills();
 	}
 	
 	/**
@@ -83,44 +83,26 @@ public class World {
 	 */
 	public void generateBills(){
 		int numBills = (int) ( (this.width * this.height) * 0.1);
-		double distance = 6.0;
 		Point curPoint ;
-		Iterator it;
-		Boolean tooClose = false;
 
-		for(int i = 0; i < numBills;) {
+		for(int i = 0; i < numBills; i++) {
 			curPoint = getEmptySpace();
-			it = bills.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry pair = (Map.Entry) it.next();
-				if (curPoint.distance((Point) pair.getKey()) < distance) {
-					tooClose = true;
-					break;
-				}
-			}
-			if(!tooClose){
-				bills.put(curPoint, getRandomBillType());
-				i++;
-			}
-			tooClose = false;
+			bills.put(curPoint, getRandomBillType());
 		}
 	}
 
 	/**
 	* Returns a random bill type
 	*/
-	private Money.Bill_Type getRandomBillType(){
-		Random rn = new Random();
-		int randNum = rn.nextInt(3 - 1 + 1) + 1;
-		Money.Bill_Type billType;
+	public Money getRandomBillType(){
+		int randNum = (int)(Math.random() * 3);
 
-		if(randNum == 1){
-			billType = Money.Bill_Type.FIVE;
-		}else if(randNum == 2){
-			billType = Money.Bill_Type.TWENTY;
-		}else{
-			billType = Money.Bill_Type.HUNDRED;
+		if (randNum == 0){
+			return Money.FIVE;
+		} else if (randNum == 1){
+			return Money.TWENTY;
+		} else {
+			return Money.HUNDRED;
 		}
-		return billType;
 	}
 }
