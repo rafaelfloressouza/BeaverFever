@@ -5,6 +5,7 @@ import tools.Load;
 
 public enum Item {
 
+    // All different types of items (Foods and Money)
     FIVE("$5", 5, 0, Load.newImage("objects/money5.png")),
     TEN("$10", 10, 0, Load.newImage("objects/money10.png")),
     TWENTY("$20", 20, 0, Load.newImage("objects/money20.png")),
@@ -39,7 +40,6 @@ public enum Item {
     }
 
     // Static methods
-
     /**
      * Returns a random bill type
      */
@@ -59,6 +59,9 @@ public enum Item {
         // Average value for a dropped bill is $32
     }
 
+    /**
+     * Returns a random food
+     * */
     public static Item getRandomFood(){
         int randNum = (int) (Math.random() * 3);
         if(randNum == 0){

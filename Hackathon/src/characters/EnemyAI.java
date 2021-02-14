@@ -3,9 +3,15 @@ package characters;
 import tools.Point;
 
 public class EnemyAI extends AI {
+
 	private Player player;	//The human player that this player wants to seek out
 	private Point target;	//The last point the enemy saw the player at, to help pathfind around corners and stuff
-	
+
+	/**
+	 * Constructor for the EnemyAI
+	 * @param owner:	Player that owns this entity
+	 * @param player:	Player to initialize this AI (hocker player, goose, etc)
+	 * */
 	public EnemyAI(Player owner, Player player) {
 		super(owner);
 		this.player = player;
@@ -31,5 +37,4 @@ public class EnemyAI extends AI {
 		else
 			moveTo(target.x,target.y);
 	}
-
 }

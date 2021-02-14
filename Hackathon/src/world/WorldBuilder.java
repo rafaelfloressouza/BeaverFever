@@ -17,12 +17,18 @@ public class WorldBuilder {
 	private int height;
 	
 	private ArrayList<Point> set;
-	
+
+
+	/**
+	 * Constructor for the world builder
+	 * @param width: 	Width of the world
+	 * @param height: 	Height of the world
+	 * */
 	public WorldBuilder(int width, int height) {
 		tiles = new Tile[width][height];
 		this.width = width;
 		this.height = height;
-		this.set = new ArrayList<Point>();
+		this.set = new ArrayList<>();
 	}
 	
 	/**

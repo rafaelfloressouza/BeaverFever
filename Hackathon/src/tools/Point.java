@@ -5,9 +5,16 @@ import java.util.Collections;
 import java.util.List;
 
 public class Point {
+
+    // Coordinate variables
     public int x;
     public int y;
 
+    /**
+     * Constructor of Point
+     * @param x:    x-coordinate
+     * @param y:    y-coordinate
+     * */
     public Point(int x, int y){
         this.x = x;
         this.y = y;
@@ -70,6 +77,9 @@ public class Point {
         return points;
     }
 
+    /**
+     * Get the distance between two points
+     * */
     public double distance(Point p2){
         return Math.sqrt(( (p2.x-this.x)* (p2.x-this.x) ) +  (p2.y - this.y) * (p2.y - this.y) );
     }

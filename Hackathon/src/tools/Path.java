@@ -5,7 +5,7 @@ import characters.Player;
 
 
 /**
- * Code for pathfinding from previous project
+ * Code for pathfinding modified and improved from a previous project
  */
 public class Path {
 

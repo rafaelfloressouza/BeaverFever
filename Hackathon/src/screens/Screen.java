@@ -26,7 +26,6 @@ public abstract class Screen {
 		this.width = width;
 		this.height = height;
 	}
-	
 
 	/**
 	 * How the system reads user key input. The user enters a key and this screen returns the next screen to display
@@ -94,7 +93,30 @@ public abstract class Screen {
     	}
     	root.getChildren().add(j);
     }
-	
+
+    /**
+	 * A method that loads and image and centers it in the middle of the screen
+	 * @param root:			The screen root to add the image to
+	 * @param i:			The image to draw
+	 * @param screenWidth   The width of the screen root
+	 * @param screenHeight  The height of the screen root
+	 * @param brightness    Adjusting the brightness of the image, from -1.0 to 1.0
+	 */
+    public static void drawCentered(Group root, Image i, double screenWidth, double screenHeight, double brightness){
+		ImageView j = new ImageView(i);
+		double x = screenWidth / 2 - i.getWidth() / 2;
+		double y = screenHeight / 2 - i.getHeight() / 2;
+		j.setX((int)x);
+		j.setY((int)y);
+		j.setPreserveRatio(true);
+		if (brightness != 0) {
+			ColorAdjust value = new ColorAdjust();
+			value.setBrightness(brightness);
+			j.setEffect(value);
+		}
+		root.getChildren().add(j);
+	}
+
 	/**
 	 * Basic writing method, defaults to white text that is not wrapped
 	 * @param root:		Root of the screen
