@@ -21,7 +21,7 @@ public class Main extends Application {
 			this.primaryStage = primaryStage;
 			
 			//Sets up some window specific things
-			primaryStage.setTitle("TITLE");			//Title of window
+			primaryStage.setTitle("TITLE - CHANGE BEFORE SUBMISSION");			//Title of window
 			primaryStage.setResizable(false); 		//If the window can be resized (no)
 			//primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("resources/window-icon.png"))); //Window icon
 			

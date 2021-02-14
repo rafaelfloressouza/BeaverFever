@@ -1,6 +1,7 @@
 package screens;
 
 import characters.Player;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import tools.FieldOfView;
@@ -17,8 +18,10 @@ public class MainScreen extends Screen {
 		world.generate();
 		
 		//Creates the player and adds it to the world
-		player = Player.getNewPlayer(world, "Player", Load.newImage("players/beaver.png"), Player.PlayerType.HUMAN);
+		player = Player.getNewHuman(world);
 		player.setFOV(new FieldOfView(world));
+		
+		populate();
 	}
 
 	@Override
@@ -49,6 +52,17 @@ public class MainScreen extends Screen {
 			player.move(0, -1);
 		if (code.equals(KeyCode.DOWN))
 			player.move(0, 1);
+		
+		// After the players turn is complete, iterate through every other player and take their turn
+		// This calls their ai function
+		// Cannot do for (Player p : world.players()) as this can throw a ConcurrentModificationException 
+		for (int i = 0; i < world.players().size(); i++)
+			world.players().get(i).takeTurn();
+		
+		if (player.hp() <= 0)
+			//If the player is dead, return the game loss screen
+			return new EndGameScreen(width, height, false);
+		
 		return this;
 	}
 	
@@ -57,7 +71,10 @@ public class MainScreen extends Screen {
 			for (int y = 0; y < tileheight; y++){
 				int wx = x + left;
 				int wy = y + top;
-				draw(root, player.tile(wx, wy).image(), x*48,y*48);
+				if (player.canSee(wx, wy))
+					draw(root, player.tile(wx, wy).image(), x*48,y*48);
+				else
+					draw(root, player.tile(wx, wy).image(), x*48,y*48, -0.7);
 			}
 		}
 	}
@@ -67,6 +84,7 @@ public class MainScreen extends Screen {
 				c.y >= top && c.y < top + height &&
 				player.canSee(c.x, c.y)) {
 				draw(root, c.image(), (c.x-left)*48, (c.y-top)*48);
+				displayHealth(c, (c.x-left)*48, (c.y-top)*48);
 			}
 		}
 	}
@@ -88,5 +106,33 @@ public class MainScreen extends Screen {
 	private int getTopmostTile(int height) {
 		return Math.max(0, Math.min(player.y - height / 2, world.height() - height));
 	}
+	
+	/**
+	 * Spawns a bunch of enemies into the world for the player to confront
+	 */
+	private void populate() {
+		for (int i = 0; i < 10; i++)
+			Player.getNewEnemy(world, player);
+	}
+	
+	/**
+	 * Displays a health bar at a given location
+	 */
+	private void displayHealth(Player p, int x, int y) {
+		Image i;
+		if (p.hp() > (3*p.hp())/4)
+			i = healthGreen;
+		else if (p.hp() > p.hp()/2)
+			i = healthYellow;
+		else if (p.hp() > 1*p.hp()/4)
+			i = healthOrange;
+		else
+			i = healthRed;
+		draw(root, i, x, y + 36);
+	}
+	private Image healthGreen = Load.newImage("icons/health-bar.png", 0, 0, 48, 12);
+	private Image healthYellow = Load.newImage("icons/health-bar.png", 0, 12, 48, 12);
+	private Image healthOrange = Load.newImage("icons/health-bar.png", 0, 24, 48, 12);
+	private Image healthRed = Load.newImage("icons/health-bar.png", 0, 36, 48, 12);
 
 }
