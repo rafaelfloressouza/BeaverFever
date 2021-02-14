@@ -270,7 +270,7 @@ public class Player {
 	 * A way to generate new preset players to populate the world with
 	 */
 	public static Player getNewHuman(World world){
-		Player p = new Player(world, "Player", Load.newImage("players/beaver-s.png"), Player.PlayerType.HUMAN);
+		Player p = new Player(world, "Player", Load.newImage("players/beaver_moving.gif"), Player.PlayerType.HUMAN);
 		p.setVisionRadius(9);
 		Point spawn = world.getEmptySpace();
 		p.x = spawn.x;
