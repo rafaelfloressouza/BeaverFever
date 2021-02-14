@@ -21,6 +21,18 @@ public class Player {
 	public int x;
 	public int y;
 
+	// Combat stats
+	private int hp;
+	public int hp() { return hp; }
+	private int maxHP;
+	public int maxHP() { return maxHP; }
+	private int attack;
+	public int attack() { return attack; }
+	private int minDamage;
+	private int maxDamage;
+	private int dodging;
+	public int dodging() { return dodging; }
+
 	// A reference to the world
 	private World world;
 	
@@ -44,7 +56,13 @@ public class Player {
     private int score;
     public int score() { return score; }
 	
-	// Constructor
+	/**
+	 * Constructor for the player
+	 * @param world:	world in which player will be generated
+	 * @param name:		The name of the player
+	 * @param image:	Image for the player
+	 * @param type:		Type of player (either human or AI)
+	 * */
 	public Player(World world, String name, Image image, PlayerType type) {
 		this.world = world;
 		this.name = name;
@@ -53,32 +71,39 @@ public class Player {
 	}
 	
 	/**
-	 * Combat Stats
+	 * Updates the hp of the player (makes sure if hp is 0, the player dies)
+	 * @param x:	Value by which to adjust the hp (either + or -)
 	 */
-	private int hp;
-	public int hp() { return hp; }
-	private int maxHP;
-	public int maxHP() { return maxHP; }
 	public void changeHP(int x) { 
 		hp = Math.min(maxHP, hp + x);
 		if (hp <= 0)
 			die();
 	}
-	private int attack;
-	public int attack() { return attack; }
-	private int minDamage;
-	private int maxDamage;
+
+	/**
+	 * Updates the min and max damage done by a player
+	 * @param min:	Min amount of damage done by a player
+	 * @param max:	Max amount of damage done by a player
+	 * */
 	public void setDamage(int min, int max) {
 		minDamage = min;
 		maxDamage = max;
 	}
+
+	/**
+	 * Gets the damage that can be done by a player
+	 * */
 	public int getDamage() {
 		return (int)(Math.random() * (maxDamage - minDamage) + minDamage);
 	}
-	private int dodging;
-	public int dodging() { return dodging; }
+
 	/**
-	 * Basic method to set the starting stats of a creature
+	 * Initializes all the stats of a creature too default values.
+	 * @param hp:		How much life the creature will have
+	 * @param attack:	Amount of damage a creature can make
+	 * @param dodging:	Amount of dogning a creature has
+	 * @param minDamage: Minimum amount of damage done by a creature
+	 * @param maxDamage: Maximum amount of damage done by a creature
 	 */
 	public void setStats(int hp, int attack, int dodging, int minDamage, int maxDamage) {
 		this.hp = hp;
@@ -102,7 +127,8 @@ public class Player {
 	}
 	
 	/**
-	 * The attack algorithm
+	 * In charge of making AI attack a target
+	 * @param target: Player to which the AI will attack
 	 */
 	public void attackTarget(Player target) {
 		//First, make sure this isnt AI friendly fire
@@ -124,12 +150,12 @@ public class Player {
 	}
 	
 	/**
-	 * Calls this ai to take the turn
+	 * Calls this AI to take the turn
 	 */
 	public void takeTurn() { ai.takeTurn(); }
 	
 	/**
-	 * Moves in the specified direction
+	 * Moves AI in the specified direction
 	 * @param sx:	relative x direction
 	 * @param sy:	relative y direction
 	 */
@@ -175,27 +201,43 @@ public class Player {
 	/**
 	 * Field of View stuff
 	 */
+
+	// Vision radius in pixels
 	private int visionRadius;
 	public int visionRadius() { return visionRadius; }
+
+	// Used to set the vision radius of an player
 	public void setVisionRadius(int r) { visionRadius = r; }
+
+	// Field of view of a player
 	private FieldOfView fov;
 	public FieldOfView fov() { return fov; }
 	public void setFOV(FieldOfView fov) { this.fov = fov; }
+
+	// Use to determine if an ai can see a point
 	public boolean canSee(int wx, int wy) {
 		return ai.canSee(wx, wy);
 	}
+
+	// Used to determine if player can still see a point (or it should be shown as explored)
 	public boolean hasSeen(int wx, int wy) {
 		return fov.hasSeen(wx, wy);
 	}
+
+	// Returns either the tile or an explored version of the tile
 	public Tile tile(int wx, int wy) {
     	if (canSee(wx, wy))
             return world.tile(wx, wy);
         else
             return rememberedTile(wx, wy);
     }
+
+    // Function returns an actual tile at the specified coordinates
     public Tile realTile(int wx, int wy) {
     	return world.tile(wx, wy);
     }
+
+    // Function returns either a NULL tile or an explored tile
     public Tile rememberedTile(int wx, int wy) {
     	if (type == PlayerType.AI)
     		return Tile.NULL;
@@ -206,7 +248,7 @@ public class Player {
     //Character's list of messages
   	private List<Message> messages;
   	public List<Message> messages() { return messages; }
-  	public void startMessages() { messages = new ArrayList<Message>(); }
+  	public void startMessages() { messages = new ArrayList<>(); }
   	
   	// Notify this player
   	public void notify(String text, Color color) {

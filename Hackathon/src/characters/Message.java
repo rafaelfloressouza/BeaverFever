@@ -3,11 +3,16 @@ package characters;
 import javafx.scene.paint.Color;
 
 public class Message {
+
 	//Instance variables for Messages
 	private String text;
 	private Color color;
 	
-	//constructor for the message
+	/**
+	 * Constructor for the Message
+	 * @param text:    Message to be displayed
+	 * @param color:   Color of the text in the message
+	 **/
 	public Message (String text, Color color) {
 		this.text = text;
 		this.color = color;

@@ -8,6 +8,7 @@ import tools.Point;
 
 public class World {
 
+	// Variables used in the world
 	private int width;
 	private int height;
 	public int width() { return width; }
@@ -46,7 +47,7 @@ public class World {
 		this.height = height;
 		tiles = new Tile[width][height];
 		this.players = new ArrayList<>();
-		this.items = new HashMap<Point, Item>();
+		this.items = new HashMap<>();
 	}
 	
 	/**
@@ -108,5 +109,4 @@ public class World {
 				setItem(p, Item.getRandomBillType());
 		}
 	}
-	
 }

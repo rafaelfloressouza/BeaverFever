@@ -48,7 +48,7 @@ public class Main extends Application {
 	 * @param screen: Screen to add the input handler to
 	 */
 	private void addKeyHandler(Screen screen) {
-		screen.scene.setOnKeyPressed(key -> {
+		screen.scene.setOnKeyReleased(key -> {
 			keyPressed(key);
         });
 	}

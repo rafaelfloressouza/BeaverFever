@@ -15,7 +15,7 @@ public final class Load {
 	
 	/**
 	 * Really basic image loader, loads the image straight from file without cropping
-	 * @param path:	Path to the image
+	 * @param name:	Path to the image
 	 * @return:		Image
 	 */
 	public static Image newImage(String name) {
@@ -24,7 +24,7 @@ public final class Load {
 	
 	/**
 	 * Loads an image by specified path, includes cropping
-	 * @param path:		path to the image, starting at application/resources/
+	 * @param name:		path to the image, starting at application/resources/
 	 * @param startx:	start x coordinate by pixel 
 	 * @param starty:	start y coordinate by pixel
 	 * @param width:	width of the resulting image

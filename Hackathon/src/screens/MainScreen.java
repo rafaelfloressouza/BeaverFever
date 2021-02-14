@@ -15,6 +15,8 @@ import tools.Point;
 import world.World;
 
 public class MainScreen extends Screen {
+
+	// Variables to keep track of the main screen status
 	private World world;
 	private Player player;
 	private Font blockfont;
@@ -23,6 +25,11 @@ public class MainScreen extends Screen {
 	private Image timsIcon;
 	private int winAmount = 550; //How many dollars the player needs to win the game
 
+	/**
+	 * Constructor for the MainScreen
+	 * @param width:	Width of the screen
+	 * @param height:	Height of the screen
+	 **/
 	public MainScreen(int width, int height) {
 		super(width, height);
 		world = new World(55,40);
@@ -40,6 +47,9 @@ public class MainScreen extends Screen {
 		populate();
 	}
 
+	/**
+	 * Used to display output to the screen such as the tiles, creates, and UI
+	 * */
 	@Override
 	public void displayOutput() {
 		// How many tiles can be displayed on the screen at once
@@ -57,10 +67,15 @@ public class MainScreen extends Screen {
 		displayCreatures(tilewidth, tileheight, leftmost, topmost);
 		displayUI();
 	}
-	
+
+	/**
+	 * Used to get user input and process it (player movement, information window, winning, AI movement)
+	 * @param key:	KeyEvent that provides information about a key
+	 * */
 	@Override
 	public Screen userInput(KeyEvent key) {
 		KeyCode code = key.getCode();
+		// If any of the following keys are pressed, move the player
 		if (code.equals(KeyCode.LEFT))
 			player.move(-1, 0);
 		if (code.equals(KeyCode.RIGHT))
@@ -69,14 +84,15 @@ public class MainScreen extends Screen {
 			player.move(0, -1);
 		if (code.equals(KeyCode.DOWN))
 			player.move(0, 1);
-		
+
+		// Go to the help screen
 		if (code.equals(KeyCode.I))
 			return new HelpScreen(width, height, this);
-		
-		if (code.equals(KeyCode.SPACE) && 
-			player.x == timHortons.x && player.y == timHortons.y &&
-			player.score() >= winAmount)
-			return new EndGameScreen(width, height, true);
+
+		// Winning condition
+		if (player.x == timHortons.x && player.y == timHortons.y && player.score() >= 10 && code.equals(KeyCode.SPACE)) {
+				return new EndGameScreen(width, height, true);
+		}
 		
 		// After the players turn is complete, iterate through every other player and take their turn
 		// This calls their ai function
@@ -90,31 +106,54 @@ public class MainScreen extends Screen {
 		
 		return this;
 	}
-	
+
+	/**
+	 * Displays all the tiles in the world and takes care of making tiles look visible or explored
+	 * @param tilewidth:	Width of a tile in pixels
+	 * @param tileheight:	Height of a tile in pixels
+	 * @param left:			Left corner of a tile
+	 * @param top;			Top corner of a tile
+	 * */
 	private void displayTiles(int tilewidth, int tileheight, int left, int top) {
 		for (int x = 0; x < tilewidth; x++){
 			for (int y = 0; y < tileheight; y++){
 				int wx = x + left;
 				int wy = y + top;
-				if (player.canSee(wx, wy)) {
+				if (player.canSee(wx, wy)) {	// Display tiles that the player can see
 					draw(root, player.tile(wx, wy).image(), x*42,y*42);
 					displayItem(world.getItem(new Point(wx,wy)),wx,wy,x,y, 0.0);
-					if (timHortons.x == wx && timHortons.y == wy)	//Not the most efficient way but it works
+					if (timHortons.x == wx && timHortons.y == wy) // Display Tim Horton's store (as can see)
 						draw(root, timsIcon, x*42,y*42);
-				} else if (player.hasSeen(wx, wy)){
+				} else if (player.hasSeen(wx, wy)){  // Make tiles a little darker (explored)
 					draw(root, player.tile(wx, wy).image(), x*42,y*42, -0.7);
 					displayItem(world.getItem(new Point(wx,wy)),wx,wy,x,y, -0.7);
-					if (timHortons.x == wx && timHortons.y == wy)
+					if (timHortons.x == wx && timHortons.y == wy)  // Display Tim Horton's store (as explored)
 						draw(root, timsIcon, x*42,y*42, -0.7);
 				}
 			}
 		}
 	}
+
+	/**
+	 * Displays all special items in the game (food & bills)
+	 * @param i:	Item that is either food or a bill
+	 * @param x:	Horizontal coordinate of item
+	 * @param y:	Vertical coordinate of item
+	 * @param tint:	Defines the tint for an item
+	 * */
 	private void displayItem(Item i, int wx, int wy, int x, int y, double tint) {
 		if (i == null)
 			return;
 		draw(root, i.image(), x*42, y*42, tint);
 	}
+
+	/**
+	 * Displays all players in the game( geese, hockey players, civilians)
+	 * @param width: 	Width in pixels of the image
+	 * @param height: 	Height in pixels of the image
+	 * @param left: 	Left corner of image
+	 * @param top:		Top corner of image
+	 * */
 	private void displayCreatures(int width, int height, int left, int top) {
 		for (Player c : world.players()) {
 			if (c.x >= left && c.x < left + width &&
@@ -127,7 +166,7 @@ public class MainScreen extends Screen {
 	}
 	
 	/**
-	 * Display some basic user UI
+	 * Displays some basic user UI (player score, bills, life)
 	 */
 	private static Image playerbar = Load.newImage("icons/player-bar.png");
 	private void displayUI() {
@@ -140,6 +179,7 @@ public class MainScreen extends Screen {
 		drawHealthRectangle();
 		write(root, player.hp() + "/" + player.maxHP(), 108, 786, blockfont, Color.WHITE);
 	}
+
 	/**
 	 * Calculate and draw a rectangle to fill the preset health bar
 	 */
@@ -235,5 +275,4 @@ public class MainScreen extends Screen {
 	private static Image healthYellow = Load.newImage("icons/health-bar.png", 0, 8, 42, 8);
 	private static Image healthOrange = Load.newImage("icons/health-bar.png", 0, 16, 42, 8);
 	private static Image healthRed = Load.newImage("icons/health-bar.png", 0, 24, 42, 8);
-
 }
