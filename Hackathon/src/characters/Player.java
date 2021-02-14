@@ -1,8 +1,6 @@
 package characters;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import items.Item;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import tools.FieldOfView;
@@ -89,15 +87,19 @@ public class Player {
 	}
 	
 	/**
-	 * When a player dies, remove them from the world and notify everything that can see them
+	 * When a player dies, remove them from the world
 	 */
 	public void die() {
 		world.removePlayer(this);
-		world.setBill(new Point(x,y), World.getRandomBillType());
-		if (type == PlayerType.HUMAN)
-			notify("You are defeated!", Color.ORANGERED);
-		else
-			notifyOthers("The " + name() + " is defeated!", Color.AQUAMARINE);
+
+		// Randomly drop a food or a bill
+		int rand = (int) (Math.random() * 2);
+
+		if(rand == 0){
+			world.setFood(new Point(x,y), Item.getRandomFood());
+		}else{
+			world.setBill(new Point(x,y), Item.getRandomBillType());
+		}
 	}
 	
 	/**
@@ -108,13 +110,9 @@ public class Player {
 		int roll = (int)(Math.random() * 11);
 		if (roll + attack() > target.dodging()) {
 			//If the target fails to dodge, they lose HP
-			int damage = getDamage();
-			target.changeHP(-damage);
-			notify("You hit the " + target.name() + " for " + damage + " damage!", Color.BISQUE);
-			target.notify("The " + target.name() + " hit you for " + damage + " damage!", Color.ORANGERED);
+			target.changeHP(-getDamage());
 		} else {
-			notify("You missed " + target.name(), Color.BISQUE);
-			target.notify("The " + target.name() + " missed you", Color.BISQUE);
+			//getMessages.add(new Message(target.name()+ " missed", Color.YELLOW));
 		}
 	}
 	
@@ -143,13 +141,14 @@ public class Player {
 		} else {
 			x += sx;
 			y += sy;
-			if (type == PlayerType.HUMAN) {
-				Point p = new Point(x,y);
-				if (world.containsBill(p)) {
-					score += world.getBill(p).value();
-					notify("You picked up $" + world.getBill(p).value() + "!", Color.GREENYELLOW);
-					world.removeBill(p);
-				}
+			Point p = new Point(x,y);
+			if (world.containsBill(p)) {
+				score += world.getBill(p).value();
+				world.removeBill(p);
+			}
+			if (world.containsFood(p)){
+				hp += world.getFood(p).food();
+				world.removeFood(p);
 			}
 		}
 	}
@@ -192,38 +191,28 @@ public class Player {
     		return fov.tile(wx, wy);
     }
     
-    //Character's list of messages
-  	private List<Message> messages;
-  	public List<Message> messages() { return messages; }
-  	public void startMessages() { messages = new ArrayList<Message>(); }
+    //Character's arraylist of messages
+  	private GetMessages getMessages;
   	
-  	// Notify this player
-  	public void notify(String text, Color color) {
-  		if (messages == null)
-  			return;
-  		messages.add(new Message(text,color));
-  		if (messages.size()>10)
-  			messages.remove(0);
+  	//notify the player and add messages
+  	public void Notify(Player p, String message, Color color) {
+  		p.getMessages.add(new Message(message, color));
   	}
   	
-  	// Notify all player that can see this one
-  	public void notifyOthers(String text, Color color) {
-  		for (Player p : world.players())
-  			if (p.canSee(x, y))
-  				p.notify(text, color);
+  	public void NotifyAll(String message, Color color) {
+  		getMessages.add(new Message(message, color));
   	}
 
 	/**
-	 * A way to generate new preset players to populate the world with
+	 * A way to generate new players to populate the world with
 	 */
 	public static Player getNewHuman(World world){
-		Player p = new Player(world, "Player", Load.newImage("players/beaver-s.png"), Player.PlayerType.HUMAN);
+		Player p = new Player(world, "Player", Load.newImage("players/beaver.png"), Player.PlayerType.HUMAN);
 		p.setVisionRadius(9);
 		Point spawn = world.getEmptySpace();
 		p.x = spawn.x;
 		p.y = spawn.y;
 		p.setStats(20, 5, 10, 3, 7);
-		p.startMessages();
 		world.addPlayer(p);
 		new PlayerAI(p);
 		return p;

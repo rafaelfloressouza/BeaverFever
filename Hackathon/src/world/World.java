@@ -1,9 +1,10 @@
 package world;
 
+import java.sql.Time;
 import java.util.*;
 
 import characters.Player;
-import items.Money;
+import items.Item;
 import tools.Point;
 
 public class World {
@@ -13,8 +14,10 @@ public class World {
 	public int width() { return width; }
 	public int height() { return height; }
 	private Tile[][] tiles;
-	private HashMap<Point, Money> bills;
-	public void setBill(Point p, Money m) { bills.put(p, m); }
+	private HashMap<Point, Item> bills;
+	public void setBill(Point p, Item m) { bills.put(p, m); }
+	private HashMap<Point, Item> foods;
+	public void setFood(Point p, Item m) {foods.put(p, m); }
 
 	/**
 	 * A list of all players
@@ -48,6 +51,7 @@ public class World {
 		tiles = new Tile[width][height];
 		this.players = new ArrayList<>();
 		this.bills = new HashMap<>();
+		this.foods = new HashMap<>();
 	}
 	
 	/**
@@ -57,6 +61,7 @@ public class World {
 		WorldBuilder b = new WorldBuilder(width, height);
 		this.tiles = b.generate(200);
 		generateBills();
+		generateFood();
 	}
 	
 	/**
@@ -73,44 +78,73 @@ public class World {
 	}
 
 	/**
-	 * Checkers whether a tile contains a bill
+	 * Checks whether a tile contains a bill
 	 */
 	public Boolean containsBill(Point p){
 		return bills.containsKey(p);
 	}
-	
-	public Money getBill(Point p) {
+
+	/**
+	 * Get a bill based on a point
+	 */
+	public Item getBill(Point p) {
 		return bills.get(p);
 	}
+
+	/**
+	 * Remove a bill based on a point
+	 */
 	public void removeBill(Point p) {
 		bills.remove(p);
 	}
 
 	/**
-	 * Populates random empty tiles with bills making sure tiles are separated by n number of units
+	 * Checks whether a tile contains a foood
+	 */
+	public Boolean containsFood(Point p){
+		return foods.containsKey(p);
+	}
+
+	/**
+	 * Get a food based on a point
+	 **/
+	public Item getFood(Point p){
+		return foods.get(p);
+	}
+
+	/**
+	 *  Removes a food based on a point
+	 * */
+	public void removeFood(Point p){
+		foods.remove(p);
+	}
+
+	/**
+	 * Populates random empty tiles with bills
 	 */
 	public void generateBills(){
-		int numBills = (int) ( (this.width * this.height) * 0.1);
-		Point curPoint ;
-
-		for(int i = 0; i < numBills; i++) {
+		int numBills = 10;
+		Point curPoint;
+		for(int i = 0; i < numBills;i++) {
 			curPoint = getEmptySpace();
-			bills.put(curPoint, getRandomBillType());
+			bills.put(curPoint, Item.getRandomBillType());
+			i++;
+			this.bills.put(curPoint, Item.getRandomBillType());
 		}
 	}
 
 	/**
-	* Returns a random bill type
-	*/
-	public static Money getRandomBillType(){
-		int randNum = (int)(Math.random() * 3);
-
-		if (randNum == 0){
-			return Money.FIVE;
-		} else if (randNum == 1){
-			return Money.TWENTY;
-		} else {
-			return Money.HUNDRED;
+	 * Populates random empty tiles with syrups
+	 */
+	public void generateFood(){
+		int numSyrups = 10;
+		Point curPoint;
+		for(int i = 0; i < numSyrups;){
+			curPoint = getEmptySpace();
+			if(!this.bills.containsKey(curPoint)){
+				this.foods.put(curPoint, Item.getRandomFood());
+				i++;
+			}
 		}
 	}
 }
