@@ -33,13 +33,16 @@ public class WorldBuilder {
 		// Initially set all tiles to be walls, then carve it out
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < height; y++)
-				tiles[x][y] = Tile.WALL;
+				tiles[x][y] = Tile.WALL0;
 		
 		//Place rooms everywhere
 		makeRooms(trials);
 		
 		//Construct hallways
 		buildHallways();
+		
+		//Change the art of all the tiles to make it look more interesting
+		finalizeWorld();
 		
 		return tiles;
 	}
@@ -75,7 +78,7 @@ public class WorldBuilder {
 			return;
 		for (int x = 1; x < cx-1; x++)
 			for (int y = 1; y < cy-1; y++) {
-				tiles[x+sx][y+sy] = Tile.FLOOR;
+				tiles[x+sx][y+sy] = Tile.getRandomFloor();
 			}
 	}
 	
@@ -112,7 +115,7 @@ public class WorldBuilder {
 		for (int x = 1; x < width-1; x++) {
 			for (int y = 1; y < height-1; y++) {
 				if (isDeadEnd(x, y)) {
-					tiles[x][y] = Tile.WALL;
+					tiles[x][y] = Tile.WALL0;
 					regions[x][y] = 0;
 					x = 1;
 					y = 1;
@@ -131,9 +134,9 @@ public class WorldBuilder {
 		while (set.size() > 0) {
 			Point c = set.get(0);
 			set.remove(c);
-			if (adjacentToFloor(c.x,c.y) > 1 || tiles[c.x][c.y] == Tile.FLOOR)
+			if (adjacentToFloor(c.x,c.y) > 1 || tiles[c.x][c.y] == Tile.getRandomFloor())
 				continue;
-			tiles[c.x][c.y] = Tile.FLOOR; 
+			tiles[c.x][c.y] = Tile.getRandomFloor(); 
 			addNeighbors(c);
 		}
 	}
@@ -267,12 +270,12 @@ public class WorldBuilder {
 				int n = regions[p.x-1][p.y];
 				changeRegion(regions[p.x+1][p.y], n);
 				regions[p.x][p.y] = n;
-				tiles[p.x][p.y] = Tile.FLOOR;  
+				tiles[p.x][p.y] = Tile.getRandomFloor();  
 			} else if (regions[p.x][p.y-1] != regions[p.x][p.y+1] && regions[p.x][p.y-1]!= 0 && regions[p.x][p.y+1]!=0) {
 				int n = regions[p.x][p.y-1];
 				changeRegion(regions[p.x][p.y+1], n);
 				regions[p.x][p.y] = n;
-				tiles[p.x][p.y] = Tile.FLOOR; 
+				tiles[p.x][p.y] = Tile.getRandomFloor(); 
 			}
 		}
 	}
@@ -303,6 +306,27 @@ public class WorldBuilder {
 		if (!tiles[x][y+1].isWall())
 			n++;
 		return n <= 1;
+	}
+	
+	/**
+	 * Iterate over every tile and randomize its type to add variability
+	 */
+	private void finalizeWorld() {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				if (y == 0) {
+					tiles[x][y] = Tile.getTopWall();
+					continue;
+				}
+				
+				if (tiles[x][y].isWall()) {
+					if (tiles[x][y-1].isWall())
+						tiles[x][y] = Tile.getBottomWall();
+					else
+						tiles[x][y] = Tile.getTopWall();
+				}
+			}
+		}
 	}
 	
 	/**
