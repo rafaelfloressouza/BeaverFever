@@ -71,10 +71,11 @@ public class MainScreen extends Screen {
 			for (int y = 0; y < tileheight; y++){
 				int wx = x + left;
 				int wy = y + top;
-				if (player.canSee(wx, wy))
+				if (player.canSee(wx, wy)) {
 					draw(root, player.tile(wx, wy).image(), x*48,y*48);
-				else
+				} else {
 					draw(root, player.tile(wx, wy).image(), x*48,y*48, -0.7);
+				}
 			}
 		}
 	}
@@ -111,8 +112,10 @@ public class MainScreen extends Screen {
 	 * Spawns a bunch of enemies into the world for the player to confront
 	 */
 	private void populate() {
-		for (int i = 0; i < 10; i++)
-			Player.getNewEnemy(world, player);
+		for (int i = 0; i < 6; i++)
+			Player.getNewRedHockey(world, player);
+		for (int i = 0; i < 3; i++)
+			Player.getNewCanadaGoose(world, player);
 	}
 	
 	/**

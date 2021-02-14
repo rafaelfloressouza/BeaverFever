@@ -78,6 +78,10 @@ public class World {
 	public Boolean containsBill(Point p){
 		return bills.containsKey(p);
 	}
+	
+	public Money getBill(Point p) {
+		return bills.get(p);
+	}
 
 	/**
 	 * Populates random empty tiles with bills making sure tiles are separated by n number of units

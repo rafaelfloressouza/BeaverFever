@@ -9,6 +9,7 @@ public class GetMessages {
 	public GetMessages() {
 		this.messagesLog = new ArrayList<>();
 	}
+	public ArrayList<Message> log() { return messagesLog; }
 	
 	//add a new message to the message log - limit to 10
 	public void add (Message message) {
@@ -21,7 +22,7 @@ public class GetMessages {
 		}
 	}
 	
-	//display the message - the most recent 1ssss0 messages
+	//display the message - the most recent 10 messages
 	public void getMessageList() {
 		for (Message i: messagesLog) {
 			System.out.println(i.getMessage());
