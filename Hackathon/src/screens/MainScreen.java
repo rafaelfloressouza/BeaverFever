@@ -23,7 +23,7 @@ public class MainScreen extends Screen {
 	private Font smallblock;
 	private Point timHortons;
 	private Image timsIcon;
-	private int winAmount = 550; //How many dollars the player needs to win the game
+	private int winAmount = 500; //How many dollars the player needs to win the game
 
 	/**
 	 * Constructor for the MainScreen
