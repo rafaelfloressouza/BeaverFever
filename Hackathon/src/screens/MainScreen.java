@@ -146,10 +146,40 @@ public class MainScreen extends Screen {
 	 * Spawns a bunch of enemies into the world for the player to confront
 	 */
 	private void populate() {
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 13; i++)
+			getRandomEnemy();
+	}
+	
+	public void getRandomEnemy() {
+		switch((int)(Math.random()*(10))) {
+		case 1:
 			Player.getNewRedHockey(world, player);
-		for (int i = 0; i < 3; i++)
+			break;
+		case 2:
+			Player.getNewBlueHockey(world, player);
+			break;
+		case 3:
+			Player.getNewWhiteHockey(world, player);
+			break;
+		case 4:
+			Player.getNewOrangeHockey(world, player);
+			break;
+		case 5:
+			Player.getBlueCivilian(world, player);
+			break;
+		case 6:
+			Player.getBrownCivilian(world, player);
+			break;
+		case 7:
+			Player.getTealCivilian(world, player);
+			break;
+		case 8:
+			Player.getYellowCivilian(world, player);
+			break;
+		case 9:
 			Player.getNewCanadaGoose(world, player);
+			break;
+		}
 	}
 	
 	/**

@@ -257,4 +257,89 @@ public class Player {
 		new EnemyAI(p, player);
 		return p;
 	}
+	
+	public static Player getNewBlueHockey(World world, Player player) {
+		Player p = new Player(world, "Blue Hockey Player", Load.newImage("players/hockey2.png"), PlayerType.AI);
+		p.setVisionRadius(9);
+		Point spawn = world.getEmptySpace();
+		p.x = spawn.x;
+		p.y = spawn.y;
+		world.addPlayer(p);
+		p.setStats(10, 3, 8, 1, 5);
+		new EnemyAI(p, player);
+		return p;
+	}
+	
+	public static Player getNewWhiteHockey(World world, Player player) {
+		Player p = new Player(world, "White Hockey Player", Load.newImage("players/hockey3.png"), PlayerType.AI);
+		p.setVisionRadius(9);
+		Point spawn = world.getEmptySpace();
+		p.x = spawn.x;
+		p.y = spawn.y;
+		world.addPlayer(p);
+		p.setStats(10, 1, 1, 1, 10);
+		new EnemyAI(p, player);
+		return p;
+	}
+	
+	public static Player getNewOrangeHockey(World world, Player player) {
+		Player p = new Player(world, "Orange Hockey Player", Load.newImage("players/hockey4.png"), PlayerType.AI);
+		p.setVisionRadius(9);
+		Point spawn = world.getEmptySpace();
+		p.x = spawn.x;
+		p.y = spawn.y;
+		world.addPlayer(p);
+		p.setStats(10, 1, 10, 1, 2);
+		new EnemyAI(p, player);
+		return p;
+	}
+	
+	public static Player getTealCivilian(World world, Player player) {
+		Player p = new Player(world, "Teal Civilian", Load.newImage("players/person1.png"), PlayerType.AI);
+		p.setVisionRadius(9);
+		Point spawn = world.getEmptySpace();
+		p.x = spawn.x;
+		p.y = spawn.y;
+		world.addPlayer(p);
+		p.setStats(7, 2, 5, 1, 3);
+		new EnemyAI(p, player);
+		return p;
+	}
+	
+	public static Player getBrownCivilian(World world, Player player) {
+		Player p = new Player(world, "Brown Civilian", Load.newImage("players/person2.png"), PlayerType.AI);
+		p.setVisionRadius(9);
+		Point spawn = world.getEmptySpace();
+		p.x = spawn.x;
+		p.y = spawn.y;
+		world.addPlayer(p);
+		p.setStats(7, 2, 5, 1, 3);
+		new EnemyAI(p, player);
+		return p;
+	}
+	
+	public static Player getYellowCivilian(World world, Player player) {
+		Player p = new Player(world, "Yellow Civilian", Load.newImage("players/person3.png"), PlayerType.AI);
+		p.setVisionRadius(9);
+		Point spawn = world.getEmptySpace();
+		p.x = spawn.x;
+		p.y = spawn.y;
+		world.addPlayer(p);
+		p.setStats(7, 1, 7, 1, 2);
+		new EnemyAI(p, player);
+		return p;
+	}
+	
+	public static Player getBlueCivilian(World world, Player player) {
+		Player p = new Player(world, "Blue Civilian", Load.newImage("players/person4.png"), PlayerType.AI);
+		p.setVisionRadius(9);
+		Point spawn = world.getEmptySpace();
+		p.x = spawn.x;
+		p.y = spawn.y;
+		world.addPlayer(p);
+		p.setStats(7, 3, 6, 2, 5);
+		new EnemyAI(p, player);
+		return p;
+	}
+	
 }
