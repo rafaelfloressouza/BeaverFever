@@ -21,10 +21,11 @@ public class MainScreen extends Screen {
 	private Font smallblock;
 	private Point timHortons;
 	private Image timsIcon;
+	private int winAmount = 550; //How many dollars the player needs to win the game
 
 	public MainScreen(int width, int height) {
 		super(width, height);
-		world = new World(60,40);
+		world = new World(55,40);
 		world.generate();
 		
 		blockfont = Load.newFont("SDS_8x8.ttf", 24);
@@ -68,6 +69,14 @@ public class MainScreen extends Screen {
 			player.move(0, -1);
 		if (code.equals(KeyCode.DOWN))
 			player.move(0, 1);
+		
+		if (code.equals(KeyCode.I))
+			return new HelpScreen(width, height, this);
+		
+		if (code.equals(KeyCode.SPACE) && 
+			player.x == timHortons.x && player.y == timHortons.y &&
+			player.score() >= winAmount)
+			return new EndGameScreen(width, height, true);
 		
 		// After the players turn is complete, iterate through every other player and take their turn
 		// This calls their ai function
@@ -168,7 +177,7 @@ public class MainScreen extends Screen {
 	 * Spawns a bunch of enemies into the world for the player to confront
 	 */
 	private void populate() {
-		for (int i = 0; i < 13; i++)
+		for (int i = 0; i < 15; i++)
 			getRandomEnemy();
 	}
 	
