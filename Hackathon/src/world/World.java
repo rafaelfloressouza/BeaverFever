@@ -66,6 +66,4 @@ public class World {
 		}
 		return new Point(x,y);
 	}
-	
-	
 }

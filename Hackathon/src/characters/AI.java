@@ -15,6 +15,13 @@ public abstract class AI {
 	}
 	
 	/**
+	 * What the owner should do on its turn
+	 */
+	public void takeTurn() {
+		// Should be overridden by the enemy, the player ai does nothing
+	}
+	
+	/**
 	 * Check if the owner can see a target point by drawing a line to it
 	 */
 	public boolean canSee(int wx, int wy) {

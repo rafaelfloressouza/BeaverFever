@@ -4,16 +4,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.util.Pair;
 import tools.Load;
 
 public class EndGameScreen extends Screen{
 
     private String gameOverMsg, winMessage, loseMessage;
     private Font font;
-    private Pair<Boolean, Boolean> type;
+    private Boolean type;
 
-    public EndGameScreen(int width, int height, Pair<Boolean, Boolean> type){
+    public EndGameScreen(int width, int height, Boolean type){
         super(width, height);
         this.gameOverMsg =  "Game Over ";
         this.winMessage = "Congrats, you won! ";
@@ -28,15 +27,15 @@ public class EndGameScreen extends Screen{
         KeyCode code = key.getCode();
         Screen screen = this;
 
-        if(type.getKey()){ // In game screen
+        if(type){ // In game screen
             if (code.equals(KeyCode.ESCAPE)) {       // If space is pressed, go to start screen
                 System.exit(0);
             } else if (code.equals(KeyCode.SPACE)) { // If escape is pressed exit the program
-                screen = new StartScreen(1280, 800);
+                screen = new StartScreen(width, height);
             }
         }else{ // In victory screen
             if(code.equals(KeyCode.SPACE))          // If space is pressed, go to game over screen
-                screen = new EndGameScreen(this.width, this.height, new Pair<>(true, null));
+                screen = new EndGameScreen(this.width, this.height, true);
         }
 
         return screen;
@@ -46,11 +45,11 @@ public class EndGameScreen extends Screen{
     public void displayOutput() {
 
         String actualMsg = "";
-        if(type.getKey()){
+        if(type){
             actualMsg = gameOverMsg;
-        }else if(type.getValue() && !type.getKey()){
+        }else if(type){
             actualMsg = winMessage;
-        }else if(!type.getValue() && !type.getKey()){
+        }else if(!type){
             actualMsg = loseMessage;
         }
 
