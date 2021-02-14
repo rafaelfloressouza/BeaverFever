@@ -91,6 +91,7 @@ public class Player {
 	 */
 	public void die() {
 		world.removePlayer(this);
+		world.setBill(new Point(x,y), World.getRandomBillType());
 	}
 	
 	/**
@@ -132,8 +133,10 @@ public class Player {
 		} else {
 			x += sx;
 			y += sy;
-			if (world.containsBill(new Point(x,y))) {
-				score += world.getBill(new Point(x,y)).value();
+			Point p = new Point(x,y);
+			if (world.containsBill(p)) {
+				score += world.getBill(p).value();
+				world.removeBill(p);
 			}
 		}
 	}

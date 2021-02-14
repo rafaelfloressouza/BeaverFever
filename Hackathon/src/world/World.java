@@ -82,6 +82,9 @@ public class World {
 	public Money getBill(Point p) {
 		return bills.get(p);
 	}
+	public void removeBill(Point p) {
+		bills.remove(p);
+	}
 
 	/**
 	 * Populates random empty tiles with bills making sure tiles are separated by n number of units
