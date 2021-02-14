@@ -20,13 +20,12 @@ public class Main extends Application {
 			this.primaryStage = primaryStage;
 			
 			//Sets up some window specific things
-			primaryStage.setTitle("TITLE - CHANGE BEFORE SUBMISSION");			//Title of window
+			primaryStage.setTitle("Beaver Fever");
 			primaryStage.setResizable(false); 		//If the window can be resized (no)
 			//primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("resources/window-icon.png"))); //Window icon
 			
 			//Initializes the first game screen, StartScreen
             screen = new StartScreen(width, height);
-//			screen = new MainScreen(width, height);
             
 			//Displays the screens output and adds a key handler
 			repaint();

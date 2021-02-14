@@ -18,21 +18,25 @@ public class MainScreen extends Screen {
 	private Player player;
 	private Font blockfont;
 	private Font smallblock;
+	private Point timHortons;
+	private Image timsIcon;
 
 	public MainScreen(int width, int height) {
 		super(width, height);
-		world = new World(30,30);
+		world = new World(60,40);
 		world.generate();
 		
 		blockfont = Load.newFont("SDS_8x8.ttf", 24);
 		smallblock = Load.newFont("SDS_8x8.ttf", 18);
-		//textfont = Load.newFont("DejaVuSansMono.ttf", 24);
 		
 		//Creates the player and adds it to the world
 		player = Player.getNewHuman(world);
 		player.setFOV(new FieldOfView(world));
 		
+		timHortons = world.getEmptySpace();
+		timsIcon = Load.newImage("icons/tim-hortons.png");
 		populate();
+		System.out.println(timHortons.x + " : " + timHortons.y); 
 	}
 
 	@Override
@@ -51,6 +55,7 @@ public class MainScreen extends Screen {
 		displayTiles(tilewidth, tileheight, leftmost, topmost);
 		displayCreatures(tilewidth, tileheight, leftmost, topmost);
 		displayUI();
+		System.out.println(player.x + " : " + player.y);
 	}
 	
 	@Override
@@ -86,15 +91,19 @@ public class MainScreen extends Screen {
 				if (player.canSee(wx, wy)) {
 					draw(root, player.tile(wx, wy).image(), x*42,y*42);
 					displayBill(world.getBill(new Point(wx,wy)),wx,wy,x,y, 0.0);
-				} else {
+					if (timHortons.x == wx && timHortons.y == wy)	//Not the most efficient way but it works
+						draw(root, timsIcon, x*42,y*42);
+				} else if (player.hasSeen(wx, wy)){
 					draw(root, player.tile(wx, wy).image(), x*42,y*42, -0.7);
 					displayBill(world.getBill(new Point(wx,wy)),wx,wy,x,y, -0.7);
+					if (timHortons.x == wx && timHortons.y == wy)
+						draw(root, timsIcon, x*42,y*42, -0.7);
 				}
 			}
 		}
 	}
 	private void displayBill(Money m, int wx, int wy, int x, int y, double tint) {
-		if (m == null || !player.hasSeen(wx, wy))
+		if (m == null)
 			return;
 		draw(root, m.image(), x*42, y*42, tint);
 	}
