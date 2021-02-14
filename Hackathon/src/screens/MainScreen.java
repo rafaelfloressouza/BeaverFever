@@ -120,19 +120,19 @@ public class MainScreen extends Screen {
 	 */
 	private void displayHealth(Player p, int x, int y) {
 		Image i;
-		if (p.hp() > (3*p.hp())/4)
+		if (p.hp() > (3*p.maxHP())/4)
 			i = healthGreen;
-		else if (p.hp() > p.hp()/2)
+		else if (p.hp() > p.maxHP()/2)
 			i = healthYellow;
-		else if (p.hp() > 1*p.hp()/4)
+		else if (p.hp() > 1*p.maxHP()/4)
 			i = healthOrange;
 		else
 			i = healthRed;
 		draw(root, i, x, y + 36);
 	}
-	private Image healthGreen = Load.newImage("icons/health-bar.png", 0, 0, 48, 12);
-	private Image healthYellow = Load.newImage("icons/health-bar.png", 0, 12, 48, 12);
-	private Image healthOrange = Load.newImage("icons/health-bar.png", 0, 24, 48, 12);
-	private Image healthRed = Load.newImage("icons/health-bar.png", 0, 36, 48, 12);
+	private static Image healthGreen = Load.newImage("icons/health-bar.png", 0, 0, 48, 8);
+	private static Image healthYellow = Load.newImage("icons/health-bar.png", 0, 8, 48, 8);
+	private static Image healthOrange = Load.newImage("icons/health-bar.png", 0, 16, 48, 8);
+	private static Image healthRed = Load.newImage("icons/health-bar.png", 0, 24, 48, 8);
 
 }
