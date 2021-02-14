@@ -4,8 +4,8 @@ import javafx.scene.image.Image;
 import tools.Load;
 
 public enum Tile {
-	WALL(Load.newImage("tiles/wall.png")), 
-	FLOOR(Load.newImage("tiles/floor.png")),
+	WALL(Load.newImage("tiles/wallsnow.png")), 
+	FLOOR(Load.newImage("tiles/snowfloor.png")),
 	NULL(null);
 
 	private Image image;

@@ -14,6 +14,7 @@ public class World {
 	public int height() { return height; }
 	private Tile[][] tiles;
 	private HashMap<Point, Money> bills;
+	public void setBill(Point p, Money m) { bills.put(p, m); }
 
 	/**
 	 * A list of all players
@@ -77,6 +78,13 @@ public class World {
 	public Boolean containsBill(Point p){
 		return bills.containsKey(p);
 	}
+	
+	public Money getBill(Point p) {
+		return bills.get(p);
+	}
+	public void removeBill(Point p) {
+		bills.remove(p);
+	}
 
 	/**
 	 * Populates random empty tiles with bills making sure tiles are separated by n number of units
@@ -94,7 +102,7 @@ public class World {
 	/**
 	* Returns a random bill type
 	*/
-	public Money getRandomBillType(){
+	public static Money getRandomBillType(){
 		int randNum = (int)(Math.random() * 3);
 
 		if (randNum == 0){
