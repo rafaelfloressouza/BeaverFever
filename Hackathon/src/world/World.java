@@ -1,6 +1,5 @@
 package world;
 
-import java.sql.Time;
 import java.util.*;
 
 import characters.Player;
@@ -14,10 +13,7 @@ public class World {
 	public int width() { return width; }
 	public int height() { return height; }
 	private Tile[][] tiles;
-	private HashMap<Point, Item> bills;
-	public void setBill(Point p, Item m) { bills.put(p, m); }
-	private HashMap<Point, Item> foods;
-	public void setFood(Point p, Item m) {foods.put(p, m); }
+	private HashMap<Point, Item> items;
 
 	/**
 	 * A list of all players
@@ -50,8 +46,7 @@ public class World {
 		this.height = height;
 		tiles = new Tile[width][height];
 		this.players = new ArrayList<>();
-		this.bills = new HashMap<>();
-		this.foods = new HashMap<>();
+		this.items = new HashMap<Point, Item>();
 	}
 	
 	/**
@@ -60,8 +55,7 @@ public class World {
 	public void generate() {
 		WorldBuilder b = new WorldBuilder(width, height);
 		this.tiles = b.generate(200);
-		generateBills();
-		generateFood();
+		generateItems();
 	}
 	
 	/**
@@ -78,73 +72,41 @@ public class World {
 	}
 
 	/**
-	 * Checks whether a tile contains a bill
+	 * Checks whether a tile contains an item
 	 */
-	public Boolean containsBill(Point p){
-		return bills.containsKey(p);
-	}
+	public Boolean containsItem(Point p){ return items.containsKey(p); }
 
 	/**
-	 * Get a bill based on a point
-	 */
-	public Item getBill(Point p) {
-		return bills.get(p);
-	}
-
-	/**
-	 * Remove a bill based on a point
-	 */
-	public void removeBill(Point p) {
-		bills.remove(p);
-	}
-
-	/**
-	 * Checks whether a tile contains a foood
-	 */
-	public Boolean containsFood(Point p){
-		return foods.containsKey(p);
-	}
-
-	/**
-	 * Get a food based on a point
+	 * Get an item based on a point
 	 **/
-	public Item getFood(Point p){
-		return foods.get(p);
-	}
+	public Item getItem(Point p){ return items.get(p); }
 
 	/**
-	 *  Removes a food based on a point
-	 * */
-	public void removeFood(Point p){
-		foods.remove(p);
-	}
+	 *  Removes an item based on a point
+	 **/
+	public void removeItem(Point p){ items.remove(p); }
+	
+	/**
+	 *  Sets the item based on a point
+	 **/
+	public void setItem(Point p, Item m) { items.put(p, m); }
 
 	/**
-	 * Populates random empty tiles with bills
+	 * Populates random empty tiles with items
 	 */
-	public void generateBills(){
-		int numBills = 10;
-		Point curPoint;
-		for(int i = 0; i < numBills;i++) {
-			curPoint = getEmptySpace();
-			bills.put(curPoint, Item.getRandomBillType());
-			i++;
-			this.bills.put(curPoint, Item.getRandomBillType());
+	public void generateItems(){
+		int numSyrups = 6;
+		int numBills = 6;
+		for(int i = 0; i < numSyrups; i++){
+			Point p = getEmptySpace();
+			if(!containsItem(p))
+				setItem(p, Item.getRandomFood());
+		}
+		for(int i = 0; i < numBills; i++){
+			Point p = getEmptySpace();
+			if(!containsItem(p))
+				setItem(p, Item.getRandomBillType());
 		}
 	}
-
-	/**
-	 * Populates random empty tiles with syrups
-	 */
-	public void generateFood(){
-		int numSyrups = 10;
-		Point curPoint;
-		for(int i = 0; i < numSyrups;){
-			curPoint = getEmptySpace();
-			if(!this.bills.containsKey(curPoint)){
-				this.foods.put(curPoint, Item.getRandomFood());
-				i++;
-			}
-		}
-	}
+	
 }

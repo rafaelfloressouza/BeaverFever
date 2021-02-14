@@ -2,7 +2,7 @@ package screens;
 
 import characters.Message;
 import characters.Player;
-import items.Money;
+import items.Item;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -36,7 +36,6 @@ public class MainScreen extends Screen {
 		timHortons = world.getEmptySpace();
 		timsIcon = Load.newImage("icons/tim-hortons.png");
 		populate();
-		System.out.println(timHortons.x + " : " + timHortons.y); 
 	}
 
 	@Override
@@ -55,7 +54,6 @@ public class MainScreen extends Screen {
 		displayTiles(tilewidth, tileheight, leftmost, topmost);
 		displayCreatures(tilewidth, tileheight, leftmost, topmost);
 		displayUI();
-		System.out.println(player.x + " : " + player.y);
 	}
 	
 	@Override
@@ -90,22 +88,22 @@ public class MainScreen extends Screen {
 				int wy = y + top;
 				if (player.canSee(wx, wy)) {
 					draw(root, player.tile(wx, wy).image(), x*42,y*42);
-					displayBill(world.getBill(new Point(wx,wy)),wx,wy,x,y, 0.0);
+					displayItem(world.getItem(new Point(wx,wy)),wx,wy,x,y, 0.0);
 					if (timHortons.x == wx && timHortons.y == wy)	//Not the most efficient way but it works
 						draw(root, timsIcon, x*42,y*42);
 				} else if (player.hasSeen(wx, wy)){
 					draw(root, player.tile(wx, wy).image(), x*42,y*42, -0.7);
-					displayBill(world.getBill(new Point(wx,wy)),wx,wy,x,y, -0.7);
+					displayItem(world.getItem(new Point(wx,wy)),wx,wy,x,y, -0.7);
 					if (timHortons.x == wx && timHortons.y == wy)
 						draw(root, timsIcon, x*42,y*42, -0.7);
 				}
 			}
 		}
 	}
-	private void displayBill(Money m, int wx, int wy, int x, int y, double tint) {
-		if (m == null)
+	private void displayItem(Item i, int wx, int wy, int x, int y, double tint) {
+		if (i == null)
 			return;
-		draw(root, m.image(), x*42, y*42, tint);
+		draw(root, i.image(), x*42, y*42, tint);
 	}
 	private void displayCreatures(int width, int height, int left, int top) {
 		for (Player c : world.players()) {
@@ -122,7 +120,7 @@ public class MainScreen extends Screen {
 		
 		for (int i = 0; i < player.messages().size(); i++) {
 			Message m = player.messages().get(i);
-			write(root, m.text(), 16, height - 10 - player.messages().size() * 20 + i*20, smallblock, m.color());
+			write(root, m.text(), 16, height - 4 - player.messages().size() * 20 + i*20, smallblock, m.color());
 		}
 	}
 	

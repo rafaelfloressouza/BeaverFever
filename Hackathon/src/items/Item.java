@@ -8,8 +8,8 @@ public enum Item {
     FIVE(5, 0, Load.newImage("objects/money5.png")),
     TWENTY(20, 0, Load.newImage("objects/money20.png")),
     HUNDRED(100, 0, Load.newImage("objects/money100.png")),
-    BACON(0, 3, Load.newImage("objects/maple.png")),
-    POUTINE(0, 5,Load.newImage("objects/maple.png")),
+    BACON(0, 3, Load.newImage("objects/bacon.png")),
+    POUTINE(0, 5,Load.newImage("objects/poutine.png")),
     SYRUP(0, 10, Load.newImage("objects/maple.png"));
 
     //value of the money
@@ -50,7 +50,6 @@ public enum Item {
 
     public static Item getRandomFood(){
         int randNum = (int) (Math.random() * 3);
-
         if(randNum == 0){
             return BACON;
         }else if(randNum == 1){
